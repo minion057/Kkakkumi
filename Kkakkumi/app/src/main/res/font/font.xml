@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--android로 지정해준 것은 API 26(8.0 Oreo)이상에서만 보이는 폰트
+        해당 애플리케이션은 최소 API가 28이므로 app:font는 지정하지않음
+        주의사항 : 폰트명은 무조건 소문자로만
+        설정 방법 : R.font.jalnan  or  android:fontFamily="@font/jalnan"  -->
+    <font
+        android:font="@font/jalnan"
+        android:fontStyle="normal"/>
+</font-family>
