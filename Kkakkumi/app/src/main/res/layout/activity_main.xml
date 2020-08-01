@@ -1,43 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/layout_main"
+    android:padding="50dp"
+    android:background="@color/colorbackground"
+    android:orientation="vertical">
 
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
+    android:layout_weight="7.8">
     <TextView
-        android:id="@+id/loading_txt_Title1"
+        android:id="@+id/main_txt_Title1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="match_parent"
         android:fontFamily="@font/jalnan"
         android:gravity="center_horizontal"
-        android:textSize="25dp"
-        android:textColor="#595959"
-        android:text="나는야" />
-
-    <TextView
-        android:id="@+id/loading_txt_Title2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loading_txt_Title1"
-        android:fontFamily="@font/jalnan"
-        android:gravity="center_horizontal"
-        android:textSize="40dp"
-        android:textColor="#82CBC4"
-        android:text="깔끄미" />
-
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loading_txt_Title2"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="462dp"
-        android:background="@drawable/button_design"
-        android:fontFamily="@font/jalnan"
-        android:textColor="#82CBC4"
-        android:text="시작하기" />
-
+        android:text="나는야"
+        android:textColor="@color/colorTitle1"
+        android:autoSizeMinTextSize="20dp"
+        android:autoSizeTextType="uniform"/>
 </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7.8">
+        <TextView
+            android:id="@+id/main_txt_Title2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center_horizontal"
+            android:text="깔끄미"
+            android:textColor="@color/colorTitle2"
+            android:autoSizeMinTextSize="40dp"
+            android:autoSizeTextType="uniform" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_layout_Menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_weight="7.5"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/main_btn_menu1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="＜"
+            android:textStyle="bold"
+            android:autoSizeMaxTextSize="60dp"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/colorTitle2"/>
+
+        <TextView
+            android:id="@+id/main_txt_Menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.7"
+            android:background="@drawable/backgrond_roundsquare_main"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="양치"
+            android:textStyle="bold"
+            android:textColor="@color/colorMenu"
+            android:layout_gravity="center_horizontal"
+            android:autoSizeTextType="uniform"/>
+
+        <Button
+            android:id="@+id/main_btn_menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="＞"
+            android:textStyle="bold"
+            android:autoSizeMaxTextSize="60dp"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/colorTitle2"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="3.8"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/main_img_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/sheep_flod1" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_layout_Button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="8"
+        android:weightSum="1.5">
+
+        <Button
+            android:id="@+id/main_btn_Start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:padding="5dp"
+            android:text="시작하기"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="20dp"
+            android:textColor="@color/colorTitle2"/>
+
+        <Button
+            android:id="@+id/main_btn_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:padding="5dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="20dp"
+            android:text="도감"
+            android:textColor="@color/colorTitle2" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/main_btn_copyright"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="20dp"
+            android:autoSizeMinTextSize="15dp"
+            android:textColor="@color/colorTitle1"
+            android:text="© Copyright INFO" />
+    </RelativeLayout>
+
+</LinearLayout>

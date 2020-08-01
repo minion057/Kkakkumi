@@ -1,11 +1,22 @@
 package Khack.Q.Kkakkumi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
@@ -14,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
     //뒤로가기(back key) 제어(종료)관리 클래스 객체
     private BackPressHandler backPressHandler;
     //</editor-fold>
+
+    //<editor-fold desc="페이지 넘기기">
+    //뒤로가기(back key) 제어(종료)관리 클래스 객체
+    Button btnEduStart, btnBookStart;
+    //</editor-fold>
+
+    //snackbar 사용을 위한 view
+    View p_view;
+
     //</editor-fold>
 
     @Override
@@ -27,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         //뒤로가기(back key) 제어(종료)관리할 Activity가 현재 Activity라고 값을 입력
         backPressHandler = new BackPressHandler(this);
         //</editor-fold>
-        //</editor-fold>
 
+        //<editor-fold desc="페이지 넘기기">
         //<editor-fold desc="교육 진행 화면 이동">
         // 교육 시작 화면으로 넘어가기 위한 클릭리스너
-        Button btnEduStart = (Button) findViewById(R.id.btnStart);
+        btnEduStart = (Button) findViewById(R.id.main_btn_Start);
         /**
          * 교육 선택에 따른 화면 activity 선택기능 구현 필요
          */
@@ -43,6 +63,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //</editor-fold>
+        //<editor-fold desc="도감 화면 이동">
+        // 도감 화면으로 넘어가기 위한 클릭리스너
+        btnBookStart = (Button) findViewById(R.id.main_btn_book);
+        btnBookStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), BookActivity.class);
+                startActivity(intent);
+            }
+        });
+        //</editor-fold>
+        //</editor-fold>
+
+        //권한 요청할 때 snackbar를 위해 현재 layout을 view에 저장
+        p_view = findViewById(R.id.layout_main);
+        //</editor-fold>
+
+        //<editor-fold desc="권한">
+        //SDK의 버전을 확인하여 23 이전이라면 절차를 진행할 필요 x
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) finish();
+        else checkSelfPermission();
+        //</editor-fold>
     }
 
     //<editor-fold desc="뒤로가기(back key) 관리">
@@ -51,4 +93,70 @@ public class MainActivity extends AppCompatActivity {
         backPressHandler.onBackPressed();
     }
     //</editor-fold>
+
+    public void checkSelfPermission() {
+        // 요청이 필요한 권한만 추가해서 저장할 변수
+        String temp = "";
+
+        // 파일 읽기 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
+        }
+
+        // 파일 쓰기 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+        }
+
+        // 카메라 권환 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.CAMERA + " ";
+        }
+
+        if (TextUtils.isEmpty(temp) == false) {
+            // 권한 요청
+            Toast.makeText(this, "앱을 실행하기 위해 파일, 카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(this, temp.trim().split(" "),1);
+        } else {
+            // 모두 허용 상태
+            //Toast.makeText(this, "오늘도 화이팅!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //권한을 요청에 응답했을 경우
+        if(requestCode == 1){
+            int length = permissions.length;
+            for (int i = 0; i < length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    // 동의
+                    Log.d("Permission","권한 허용 : " + permissions[i]);
+                }else{
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])){
+                        Snackbar.make(p_view, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
+                                Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finish();
+                            }
+                        }).show();
+                    }else {
+                        Snackbar.make(p_view, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
+                                Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finish();
+                            }
+                        }).show();
+                    }
+                }
+            }
+        }
+    }
 }

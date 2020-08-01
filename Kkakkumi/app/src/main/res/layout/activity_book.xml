@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookActivity"
+    android:background="@color/colorBookback"
+    android:padding="50dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="9">
+        <TextView
+            android:id="@+id/book_txt_Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center_horizontal"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="25dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/backgrond_roundsquare_book"
+            android:textColor="@color/colorTitle2"
+            android:text="깔끄미 캐릭터 수집" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:fillViewport="true">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@raw/sheep_flod" />
+
+                <ImageView
+                    android:id="@+id/book_img_c2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_straight_mask" />
+
+                <ImageView
+                    android:id="@+id/book_img_c3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_flod1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@raw/sheep_flod" />
+
+                <ImageView
+                    android:id="@+id/book_img_c12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_straight_mask" />
+
+                <ImageView
+                    android:id="@+id/book_img_c13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_flod1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@raw/sheep_flod" />
+
+                <ImageView
+                    android:id="@+id/book_img_c22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_straight_mask" />
+
+                <ImageView
+                    android:id="@+id/book_img_c32"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_flod1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@raw/sheep_flod" />
+
+                <ImageView
+                    android:id="@+id/book_img_c23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_straight_mask" />
+
+                <ImageView
+                    android:id="@+id/book_img_c33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_flod1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@raw/sheep_flod" />
+
+                <ImageView
+                    android:id="@+id/book_img_c24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_straight_mask" />
+
+                <ImageView
+                    android:id="@+id/book_img_c34"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/sheep_flod1" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

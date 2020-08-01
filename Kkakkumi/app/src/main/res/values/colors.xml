@@ -3,4 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorbackground">#EEEEEE</color>
+
+    <color name="colorTitle1">#595959</color>
+    <color name="colorTitle2">#82CBC4</color>
+    <color name="colorMenu">#5D6DBE</color>
+
+    <color name="colorBookback">#FEEBB6</color>
 </resources>
