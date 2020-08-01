@@ -7,8 +7,10 @@
     <color name="colorbackground">#EEEEEE</color>
 
     <color name="colorTitle1">#595959</color>
+    <color name="colorinfo">#989898</color>
     <color name="colorTitle2">#82CBC4</color>
     <color name="colorMenu">#5D6DBE</color>
 
     <color name="colorBookback">#FEEBB6</color>
+
 </resources>

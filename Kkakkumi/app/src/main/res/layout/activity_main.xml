@@ -164,7 +164,7 @@
             android:autoSizeTextType="uniform"
             android:autoSizeMaxTextSize="20dp"
             android:autoSizeMinTextSize="15dp"
-            android:textColor="@color/colorTitle1"
+            android:textColor="@color/colorinfo"
             android:text="© Copyright INFO" />
     </RelativeLayout>
 

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     //<editor-fold desc="페이지 넘기기">
     //뒤로가기(back key) 제어(종료)관리 클래스 객체
-    Button btnEduStart, btnBookStart;
+    Button btnEduStart, btnBookStart, btncopyright;
     //</editor-fold>
 
     //snackbar 사용을 위한 view
@@ -74,6 +74,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //</editor-fold>
+        //<editor-fold desc="저작권 화면 이동">
+        // 저작권 화면으로 넘어가기 위한 클릭리스너
+        btncopyright = (Button) findViewById(R.id.main_btn_copyright);
+        btncopyright.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+                startActivityForResult(intent,1);
+            }
+        });
+        //</editor-fold>
         //</editor-fold>
 
         //권한 요청할 때 snackbar를 위해 현재 layout을 view에 저장
@@ -81,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold desc="권한">
-        //SDK의 버전을 확인하여 23 이전이라면 절차를 진행할 필요 x
+        // SDK의 버전을 확인하여 23 이전이라면 절차를 진행할 필요 x
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) finish();
+        // 아니라면 권한 체크 실행
         else checkSelfPermission();
         //</editor-fold>
     }
@@ -94,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
     }
     //</editor-fold>
 
+    //<editor-fold desc="권한">
+    //<editor-fold desc="권한 요청">
+    /*
+    * 허락되지 않은 권한만 구분해서 요청하는 메소드
+    */
     public void checkSelfPermission() {
         // 요청이 필요한 권한만 추가해서 저장할 변수
         String temp = "";
@@ -125,7 +142,12 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(this, "오늘도 화이팅!", Toast.LENGTH_SHORT).show();
         }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="요청 답장 오면 실행">
+    /*
+     * 사용자에게 권한 요청 답장이 오면 실행되는 메소드
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -159,4 +181,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    //</editor-fold>
+    //</editor-fold>
 }

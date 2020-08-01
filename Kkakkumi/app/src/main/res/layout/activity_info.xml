@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="500dp"
+    android:adjustViewBounds="true"
+    tools:context=".InfoActivity"
+    android:orientation="vertical"
+    android:padding="50dp"
+    android:background="@drawable/backgrond_roundsquare_pop">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_weight="3.3">
+        <TextView
+            android:id="@+id/info_txt_Title1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center_horizontal"
+            android:text="나는야"
+            android:textColor="@color/colorTitle1"
+            android:autoSizeMinTextSize="20dp"
+            android:autoSizeTextType="uniform"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3.1">
+        <TextView
+            android:id="@+id/info_txt_Title2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center_horizontal"
+            android:text="깔끄미"
+            android:textColor="@color/colorTitle2"
+            android:autoSizeMinTextSize="40dp"
+            android:autoSizeTextType="uniform" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.9"
+        android:background="@color/colorBookback"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/info_txt_info1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/jalnan"
+                android:gravity="center"
+                android:text="제8회 K-해커톤\n실감콘텐츠 앱 개발 챌린지\n-참여중-"
+                android:textColor="@color/colorTitle1" />
+
+            <TextView
+                android:id="@+id/info_txt_info2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/jalnan"
+                android:gravity="center"
+                android:text="Font : 여기어때 잘난체\nColor(나는야) : #595959\nColor(깔끄미) : #82CBC4\nColor(메뉴) : #5D6DBE"
+                android:textColor="@color/colorTitle1" />
+
+            <TextView
+                android:id="@+id/info_txt_info3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoSizeMaxTextSize="13dp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/jalnan"
+                android:gravity="fill"
+                android:layout_marginTop="10dp"
+                android:text="이 애플리케이션은 ㈜여기어때컴퍼니가 제공한 여기어때 잘난체가 적용되어 있습니다."
+                android:textColor="@color/colorinfo" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="3.5"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/pop_btn_Close"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="0.5"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:padding="5dp"
+            android:text="닫기"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="20dp"
+            android:textColor="@color/colorTitle2"/>
+    </LinearLayout>
+</LinearLayout>
