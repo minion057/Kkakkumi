@@ -1,37 +1,37 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
 	package
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:3:7-27
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:3:7-27
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
 	android:versionName
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
 	android:versionCode
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:1-4:12
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:11-69
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml:2:11-69
 uses-sdk
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		ADDED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
-		INJECTED from E:\K-hack\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		ADDED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
+		INJECTED from E:\AndroidProject\talkabout\Kkakkumi\Kkakkumi\sdk\java\AndroidManifest.xml
