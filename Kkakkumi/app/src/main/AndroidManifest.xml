@@ -33,7 +33,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InfoActivity" android:theme="@style/popupTheme"></activity>
+        <activity android:name=".EduActivity"></activity>
+        <activity
+            android:name=".InfoActivity"
+            android:theme="@style/popupTheme" />
         <activity android:name=".BookActivity" />
         <activity
             android:name=".WashHandActivity"

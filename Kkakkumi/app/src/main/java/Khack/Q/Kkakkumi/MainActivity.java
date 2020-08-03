@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -29,10 +30,25 @@ public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="페이지 넘기기">
     //뒤로가기(back key) 제어(종료)관리 클래스 객체
     Button btnEduStart, btnBookStart, btncopyright;
+    // 페이지 넘기기 객체
+    Intent intent;
     //</editor-fold>
 
+    //<editor-fold desc="권한">
     //snackbar 사용을 위한 view
     View p_view;
+    //</editor-fold>
+
+    //<editor-fold desc="교육 메뉴">
+    // 메뉴 넘기기 버튼을 누르면 글자를 변경 >> 배열에서 글자 꺼내오기
+    String[] menus = {"양치", "손씻기", "기침막기", "마스크"};
+    // 다음 버튼 +1 / 이전 버튼 -1 로 순서를 제한하여 어느 메뉴를 꺼내야하는지 정함
+    int menu_num = 0;
+    // 메뉴 글자를 보여줄 요소
+    TextView txtMenu;
+    // 버튼 요소
+    Button btnMenu_pre, btnMenu_af;
+    //</editor-fold>
 
     //</editor-fold>
 
@@ -42,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //<editor-fold desc="변수 값 입력">
-
         //<editor-fold desc="뒤로가기(back key) 관리">
         //뒤로가기(back key) 제어(종료)관리할 Activity가 현재 Activity라고 값을 입력
         backPressHandler = new BackPressHandler(this);
@@ -58,7 +73,24 @@ public class MainActivity extends AppCompatActivity {
         btnEduStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WashHandActivity.class);
+                switch (menu_num){
+                    case 0: //양치
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        break;
+                    case 1: //손씻기
+                        intent = new Intent(getApplicationContext(), WashHandActivity.class);
+                        break;
+                    case 2: //기침막기
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        break;
+                    case 3: //마스크
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        break;
+                    default:
+                        Log.d("V_Error", "menu : "+ Integer.toString(menu_num));
+                        return;
+                }
+                intent.putExtra("menu", menu_num);
                 startActivity(intent);
             }
         });
@@ -69,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         btnBookStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BookActivity.class);
+                intent = new Intent(getApplicationContext(), BookActivity.class);
                 startActivity(intent);
             }
         });
@@ -80,15 +112,41 @@ public class MainActivity extends AppCompatActivity {
         btncopyright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+                intent = new Intent(getApplicationContext(), InfoActivity.class);
                 startActivityForResult(intent,1);
             }
         });
         //</editor-fold>
         //</editor-fold>
 
+        //<editor-fold desc="권한">
         //권한 요청할 때 snackbar를 위해 현재 layout을 view에 저장
         p_view = findViewById(R.id.layout_main);
+        //</editor-fold>
+
+        //<editor-fold desc="교육 메뉴">
+        // 메뉴 글자를 보여줄 요소
+        txtMenu = (TextView)findViewById(R.id.main_txt_Menu);
+        // 메뉴를 조절할 버튼
+        btnMenu_pre = (Button)findViewById(R.id.main_btn_menu1);
+        btnMenu_pre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu_num -= 1;
+                if(0 > menu_num) menu_num = 3;
+                txtMenu.setText(menus[menu_num]);
+            }
+        });
+        btnMenu_af = (Button)findViewById(R.id.main_btn_menu2);
+        btnMenu_af.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu_num += 1;
+                if(menus.length <= menu_num) menu_num = 0;
+                txtMenu.setText(menus[menu_num]);
+            }
+        });
+        //</editor-fold>
         //</editor-fold>
 
         //<editor-fold desc="권한">
