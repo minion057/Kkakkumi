@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+
 public class EduActivity extends AppCompatActivity {
     //<editor-fold desc="변수">
     TextView test;
     Intent intent;
     int menu;
+
+    FirebaseVisionFaceDetectorOptions highAccuracyOpts, realTimeOpts;
     //</editor-fold>
 
     @Override
