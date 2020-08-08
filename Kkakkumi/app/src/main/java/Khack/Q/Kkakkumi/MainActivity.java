@@ -66,19 +66,19 @@ public class MainActivity extends AppCompatActivity {
         //<editor-fold desc="페이지 넘기기">
         //<editor-fold desc="교육 진행 화면 이동">
         // 교육 시작 화면으로 넘어가기 위한 클릭리스너
-        btnEduStart = (Button) findViewById(R.id.main_btn_Start);
+        btnEduStart = findViewById(R.id.main_btn_Start);
         /**
-         * 교육 선택에 따른 화면 activity 선택기능 구현 필요
+         * 교육 선택에 따른 화면 activity 선택기능 구현
          */
         btnEduStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (menu_num){
                     case 0: //양치
-                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        intent = new Intent(getApplicationContext(), TestActivity.class);
                         break;
                     case 1: //손씻기
-                        intent = new Intent(getApplicationContext(), WashHandActivity.class);
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
                         break;
                     case 2: //기침막기
                         intent = new Intent(getApplicationContext(), EduActivity.class);
@@ -97,24 +97,18 @@ public class MainActivity extends AppCompatActivity {
         //</editor-fold>
         //<editor-fold desc="도감 화면 이동">
         // 도감 화면으로 넘어가기 위한 클릭리스너
-        btnBookStart = (Button) findViewById(R.id.main_btn_book);
-        btnBookStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(getApplicationContext(), BookActivity.class);
-                startActivity(intent);
-            }
+        btnBookStart = findViewById(R.id.main_btn_book);
+        btnBookStart.setOnClickListener(view -> {
+            intent = new Intent(getApplicationContext(), BookActivity.class);
+            startActivity(intent);
         });
         //</editor-fold>
         //<editor-fold desc="저작권 화면 이동">
         // 저작권 화면으로 넘어가기 위한 클릭리스너
-        btncopyright = (Button) findViewById(R.id.main_btn_copyright);
-        btncopyright.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivityForResult(intent,1);
-            }
+        btncopyright = findViewById(R.id.main_btn_copyright);
+        btncopyright.setOnClickListener(view -> {
+            intent = new Intent(getApplicationContext(), InfoActivity.class);
+            startActivityForResult(intent,1);
         });
         //</editor-fold>
         //</editor-fold>
@@ -126,16 +120,13 @@ public class MainActivity extends AppCompatActivity {
 
         //<editor-fold desc="교육 메뉴">
         // 메뉴 글자를 보여줄 요소
-        txtMenu = (TextView)findViewById(R.id.main_txt_Menu);
+        txtMenu = findViewById(R.id.main_txt_Menu);
         // 메뉴를 조절할 버튼
-        btnMenu_pre = (Button)findViewById(R.id.main_btn_menu1);
-        btnMenu_pre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menu_num -= 1;
-                if(0 > menu_num) menu_num = 3;
-                txtMenu.setText(menus[menu_num]);
-            }
+        btnMenu_pre = findViewById(R.id.main_btn_menu1);
+        btnMenu_pre.setOnClickListener(view -> {
+            menu_num -= 1;
+            if(0 > menu_num) menu_num = 3;
+            txtMenu.setText(menus[menu_num]);
         });
         btnMenu_af = (Button)findViewById(R.id.main_btn_menu2);
         btnMenu_af.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     //<editor-fold desc="권한">
     //<editor-fold desc="권한 요청">
-    /*
+    /**
     * 허락되지 않은 권한만 구분해서 요청하는 메소드
     */
     public void checkSelfPermission() {
@@ -203,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
     //</editor-fold>
 
     //<editor-fold desc="요청 답장 오면 실행">
-    /*
+    /**
      * 사용자에게 권한 요청 답장이 오면 실행되는 메소드
      */
     @Override

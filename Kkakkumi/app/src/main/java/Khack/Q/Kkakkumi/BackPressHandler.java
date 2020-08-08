@@ -3,7 +3,7 @@ package Khack.Q.Kkakkumi;
 import android.app.Activity;
 import android.widget.Toast;
 
-/*
+/**
 * back 입력을 관리하는 클래스
 * 기능 1. back key를 처음 입력 시 한 번 더 누를 경우 앱이 종료된다고 Toast 메시지로 힌트를 줌
 * 기능 2. 2초 이내 back key를 두 번 입력하면 Activity가 종료
@@ -19,7 +19,7 @@ public class BackPressHandler {
     //</editor-fold>
 
     //<editor-fold desc="back key를 제어할 Activity를 지정">
-    /*
+    /**
     * 뒤로가기를 제어할 Activity를 지정하는 메소드
     * @Param activity 뒤로가기를 제어할 Activity
     */
@@ -59,7 +59,7 @@ public class BackPressHandler {
     //</editor-fold>
 
     //<editor-fold desc="toast 메시지로 힌트주기">
-    /*
+    /**
     * 힌트를 줄 Toast 메시지를 띄우는 메소드
     */
     public void showGuide() {

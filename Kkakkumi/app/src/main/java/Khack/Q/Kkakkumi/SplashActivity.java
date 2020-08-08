@@ -66,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(inte);
                         finish();
                     }
-                }, 1000);
+                }, 100);
             }
 
             /*애니메이션 시작*/
