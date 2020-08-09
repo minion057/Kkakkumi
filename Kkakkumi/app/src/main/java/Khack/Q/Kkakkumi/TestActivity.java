@@ -20,11 +20,13 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Size;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +53,6 @@ import java.util.concurrent.Executors;
 public class TestActivity extends AppCompatActivity {
 
     //<editor-fold desc="변수 선언">
-    //<editor-fold desc="camerX">
     Preview preview;
     Camera camera;
     PreviewView viewFinder;
@@ -68,15 +69,17 @@ public class TestActivity extends AppCompatActivity {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
+    TextView txt_notice;
+
     //</editor-fold>
 
     Context cont;
     RelativeLayout Rela;
-    ImageView imageLE;
+    ImageView imageLE, img_virus1, img_virus2, img_virus3, img_virus4, img_virus5, img_virus6;
 
     FaceDraw mDraw;
-    FaceGraphic mGrap;
-    GraphicOverlay over;
+
+
     public void drawface(FirebaseVisionFace face){
 
         if(mDraw == null){
@@ -104,7 +107,31 @@ public class TestActivity extends AppCompatActivity {
         cont = this;
         Rela = findViewById(R.id.testre);
         imageLE = new ImageView(cont);
+        img_virus1 = new ImageView(cont);
+        img_virus2 = new ImageView(cont);
+        img_virus3 = new ImageView(cont);
+        img_virus4 = new ImageView(cont);
+        img_virus5 = new ImageView(cont);
+        img_virus6 = new ImageView(cont);
+        img_virus1.setImageResource(R.drawable.virus);
+        img_virus2.setImageResource(R.drawable.virus);
+        img_virus3.setImageResource(R.drawable.virus);
+        img_virus4.setImageResource(R.drawable.virus);
+        img_virus5.setImageResource(R.drawable.virus);
+        img_virus6.setImageResource(R.drawable.virus);
+        img_virus1.setVisibility(View.INVISIBLE);
+        img_virus2.setVisibility(View.INVISIBLE);
+        img_virus3.setVisibility(View.INVISIBLE);
+        img_virus4.setVisibility(View.INVISIBLE);
+        img_virus5.setVisibility(View.INVISIBLE);
+        img_virus6.setVisibility(View.INVISIBLE);
         Rela.addView(imageLE);
+        Rela.addView(img_virus1);
+        Rela.addView(img_virus2);
+        Rela.addView(img_virus3);
+        Rela.addView(img_virus4);
+        Rela.addView(img_virus5);
+        Rela.addView(img_virus6);
 
         //<editor-fold desc="변수 값 넣기">
 
@@ -127,6 +154,7 @@ public class TestActivity extends AppCompatActivity {
         cameraExecutor = Executors.newSingleThreadExecutor();
         //</editor-fold>
 
+        txt_notice = findViewById(R.id.edu_notice);
         //</editor-fold>
 
         //<editor-fold desc="camerX">
@@ -296,14 +324,26 @@ public class TestActivity extends AppCompatActivity {
                                     Log.d("Test", "start");
                                     if(faces.size() <= 0){
                                         //drawface(null);
+                                        txt_notice.setText("얼굴을 보여줘!");
+                                        txt_notice.setVisibility(View.VISIBLE);
+
                                         imageLE.setImageResource(R.drawable.backgrond_btnstart);
                                         imageLE.setX(p.x / 2 -400);
-                                        imageLE.setY(p.y /2 - 800);
+                                        imageLE.setY(p.y /2 - 600);
                                         imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
+
+                                        img_virus1.setVisibility(View.INVISIBLE);
+                                        img_virus2.setVisibility(View.INVISIBLE);
+                                        img_virus3.setVisibility(View.INVISIBLE);
+                                        img_virus4.setVisibility(View.INVISIBLE);
+                                        img_virus5.setVisibility(View.INVISIBLE);
+                                        img_virus6.setVisibility(View.INVISIBLE);
+
                                         Log.d("Test","No Face");
                                     }
                                     for (FirebaseVisionFace face : faces) {
                                         //drawface(face);
+                                        txt_notice.setText("잘하고 있어!");
 
                                         Log.d("Test","Face bounds : " + face.getBoundingBox());
                                         List<FirebaseVisionPoint> leftEyeContour =
@@ -311,10 +351,41 @@ public class TestActivity extends AppCompatActivity {
                                         if(leftEyeContour.size() <= 0 ) return;
 
                                         for(FirebaseVisionPoint fp : leftEyeContour){
-                                            imageLE.setImageResource(R.drawable.testimg);
-                                            imageLE.setX(p.x * fp.getX() / imageP.getWidth() + 70);
-                                            imageLE.setY(p.y * fp.getY() / imageP.getHeight() - 150);
-                                            imageLE.setLayoutParams(new RelativeLayout.LayoutParams(150, 150));
+                                            imageLE.setImageResource(R.drawable.virus);
+                                            imageLE.setX(p.x * fp.getX() / imageP.getWidth() + 100);
+                                            imageLE.setY(p.y * fp.getY() / imageP.getHeight() + 90);
+                                            imageLE.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus1.setVisibility(View.VISIBLE);
+                                            img_virus1.setX(p.x * fp.getX() / imageP.getWidth() + 150);
+                                            img_virus1.setY(p.y * fp.getY() / imageP.getHeight() + 200);
+                                            img_virus1.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus2.setVisibility(View.VISIBLE);
+                                            img_virus2.setX(p.x * fp.getX() / imageP.getWidth() + 200);
+                                            img_virus2.setY(p.y * fp.getY() / imageP.getHeight() + 140);
+                                            img_virus2.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus3.setVisibility(View.VISIBLE);
+                                            img_virus3.setX(p.x * fp.getX() / imageP.getWidth() + 250);
+                                            img_virus3.setY(p.y * fp.getY() / imageP.getHeight() + 210);
+                                            img_virus3.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus4.setVisibility(View.VISIBLE);
+                                            img_virus4.setX(p.x * fp.getX() / imageP.getWidth() + 300);
+                                            img_virus4.setY(p.y * fp.getY() / imageP.getHeight() + 160);
+                                            img_virus4.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus5.setVisibility(View.VISIBLE);
+                                            img_virus5.setX(p.x * fp.getX() / imageP.getWidth() + 350);
+                                            img_virus5.setY(p.y * fp.getY() / imageP.getHeight() + 200);
+                                            img_virus5.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
+                                            img_virus6.setVisibility(View.VISIBLE);
+                                            img_virus6.setX(p.x * fp.getX() / imageP.getWidth() + 400);
+                                            img_virus6.setY(p.y * fp.getY() / imageP.getHeight() + 80);
+                                            img_virus6.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
+
                                             break;
                                         }
                                     }
