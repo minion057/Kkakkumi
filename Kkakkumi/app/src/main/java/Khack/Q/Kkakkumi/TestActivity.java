@@ -15,6 +15,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -149,7 +150,6 @@ public class TestActivity extends AppCompatActivity {
         viewFinder = findViewById(R.id.viewFinder);
 
         outputDirectory = getOutputDirectory();
-        Log.d("test : ",outputDirectory.toString());
 
         cameraExecutor = Executors.newSingleThreadExecutor();
         //</editor-fold>
@@ -164,17 +164,44 @@ public class TestActivity extends AppCompatActivity {
 
     //<editor-fold desc="camerX">
     private File getOutputDirectory() {
-        File dir = new File(Environment.getExternalStorageDirectory().toString()+"/kkal");
-        try{
-            if(!dir.exists()){
-                dir.mkdir();
-                Log.d("File : ", dir.toString()+" 경로 생성");
+        File dir = null;
+        /*
+        if(Build.VERSION.SDK_INT >= 29){
+            //29버전부터 getExternalStorageDirectory()이 실행되지 않아 따로 코드 작성
+            dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
+            dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
+        }else {
+            dir = new File(Environment.getExternalStorageDirectory().toString() + "/kkal");
+        }
+        try {
+            if (!dir.exists()) {
+                dir.mkdirs();
+                Log.d("File : ", dir.toString() + " 경로 생성 시도");
             }
-            if(dir.exists()) Log.d("File : ", dir.toString()+" 경로 생성 succes");
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("File : ", e.getMessage());
         }
+        if (dir == null || !dir.exists()) { Log.d("File : ", dir.toString() + "경로 생성 실패"); }
+        else { Log.d("File : ", dir.toString() +"경로 생성 성공"); }
+         */
+        dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
+        makefolder(dir);
+        dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
+        makefolder(dir);
         return dir;
+    }
+
+    public void makefolder(File dir){
+        try {
+            if (!dir.exists()) {
+                dir.mkdirs();
+                Log.d("File : ", dir.toString() + " 경로 생성 시도");
+            }
+        } catch (Exception e) {
+            Log.e("File : ", e.getMessage());
+        }
+        if (dir == null || !dir.exists()) { Log.d("File : ", dir.toString() + "경로 생성 실패"); }
+        else { Log.d("File : ", dir.toString() +"경로 생성 성공"); }
     }
 
     private void startCamera() {
@@ -250,18 +277,18 @@ public class TestActivity extends AppCompatActivity {
         imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
                 new ImageCapture.OnImageSavedCallback(){
 
-            @Override
-            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                Uri saveUri = Uri.fromFile(photoFile);
-                String msg = "Photo capture succeeded: "+saveUri;
-                Log.d("Camera Save", msg);
-            }
+                    @Override
+                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                        Uri saveUri = Uri.fromFile(photoFile);
+                        String msg = "Photo capture succeeded: "+saveUri;
+                        Log.d("Camera Save", msg);
+                    }
 
-            @Override
-            public void onError(@NonNull ImageCaptureException exc) {
-                Log.e("Camera", "Photo capture failed: "+ exc.getMessage());
-            }
-        });
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exc) {
+                        Log.e("Camera", "Photo capture failed: "+ exc.getMessage());
+                    }
+                });
     }
     //</editor-fold>
 

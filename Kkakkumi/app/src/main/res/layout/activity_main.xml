@@ -11,21 +11,21 @@
     android:orientation="vertical">
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="15dp"
-    android:layout_weight="7.8">
-    <TextView
-        android:id="@+id/main_txt_Title1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="@font/jalnan"
-        android:gravity="center_horizontal"
-        android:text="나는야"
-        android:textColor="@color/colorTitle1"
-        android:autoSizeMinTextSize="20dp"
-        android:autoSizeTextType="uniform"/>
-</RelativeLayout>
+        android:layout_marginTop="15dp"
+        android:layout_weight="7.8">
+        <TextView
+            android:id="@+id/main_txt_Title1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center_horizontal"
+            android:text="나는야"
+            android:textColor="@color/colorTitle1"
+            android:autoSizeMinTextSize="20dp"
+            android:autoSizeTextType="uniform"/>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

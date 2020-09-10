@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         //<editor-fold desc="권한">
         // SDK의 버전을 확인하여 23 이전이라면 절차를 진행할 필요 x
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) finish();
-        // 아니라면 권한 체크 실행
+            // 아니라면 권한 체크 실행
         else checkSelfPermission();
         //</editor-fold>
     }
@@ -158,22 +158,25 @@ public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="권한">
     //<editor-fold desc="권한 요청">
     /**
-    * 허락되지 않은 권한만 구분해서 요청하는 메소드
-    */
+     * 허락되지 않은 권한만 구분해서 요청하는 메소드
+     */
     public void checkSelfPermission() {
         // 요청이 필요한 권한만 추가해서 저장할 변수
         String temp = "";
 
-        // 파일 읽기 권한 확인
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            temp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
-        }
+        if(Build.VERSION.SDK_INT < 29){
+            //29 >> 안드로이드 10보다 낮으면 파일 읽기 쓰기 권한 필요
+            // 파일 읽기 권한 확인
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                temp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
+            }
 
-        // 파일 쓰기 권한 확인
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+            // 파일 쓰기 권한 확인
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+            }
         }
 
         // 카메라 권환 확인
