@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), TestActivity.class);
                         break;
                     case 1: //손씻기
-                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        intent = new Intent(getApplicationContext(), Test2Activity.class);
                         break;
                     case 2: //기침막기
                         intent = new Intent(getApplicationContext(), EduActivity.class);

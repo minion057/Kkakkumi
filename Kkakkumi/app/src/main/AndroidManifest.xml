@@ -34,15 +34,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TestActivity" />
+        <activity android:name=".Test2Activity" />
         <activity android:name=".EduActivity" />
         <activity
             android:name=".InfoActivity"
             android:theme="@style/popupTheme" />
         <activity android:name=".BookActivity" />
-        <activity
-            android:name=".WashHandActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
