@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@android:color/holo_red_light"
-        android:text="start REC"
+        android:text="START REC"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

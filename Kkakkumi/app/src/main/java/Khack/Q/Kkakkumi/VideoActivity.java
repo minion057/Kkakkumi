@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
+import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,6 +30,7 @@ public class VideoActivity extends AppCompatActivity {
     Button actionRec;
 
     Intent inte;
+    DisplayMetrics displayMetrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class VideoActivity extends AppCompatActivity {
         }
 
         videoFile = this.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/MediaProjection.mp4";
+        //displayMetrics = Resources.getSystem().getDisplayMetrics();
+        displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+
         actionRec = findViewById(R.id.actionRec);
         actionRec.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,13 +69,8 @@ public class VideoActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
-
-
-
             }
         });
-
-        //initView();
     }
 
     @Override
@@ -95,19 +97,6 @@ public class VideoActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    /**
-     * 뷰 초기화
-
-    private void initView() {
-        findViewById(R.id.actionRec).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 미디어 프로젝션 요청
-                startMediaProjection();
-            }
-        });
-    } */
 
     /**
      * 1. 미디어 프로젝션 요청
@@ -144,28 +133,13 @@ public class VideoActivity extends AppCompatActivity {
         };
         mediaProjection.registerCallback(callback, null);
 
-        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        //DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
         mediaProjection.createVirtualDisplay(
                 "sample",
                 displayMetrics.widthPixels, displayMetrics.heightPixels, displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                 screenRecorder.getSurface(), null, null);
 
-        /*
-        final Button actionRec = findViewById(R.id.actionRec);
-        actionRec.setText("STOP REC");
-        actionRec.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionRec.setText("START REC");
-                if (mediaProjection != null) {
-                    mediaProjection.stop();
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(videoFile), "video/mp4");
-                    startActivity(intent);
-                }
-            }
-        });*/
+        //녹화한 영상 재생
         screenRecorder.start();
     }
 
@@ -180,20 +154,19 @@ public class VideoActivity extends AppCompatActivity {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setOutputFile(videoFile);
-        try {
-            DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-            mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mediaRecorder.setVideoEncodingBitRate(512 * 1000);
-        mediaRecorder.setVideoFrameRate(30);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
+        mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
+
         try {
             mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            Log.e("prepare", "IllegalStateException : " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("prepare", "IOException : " + e.getMessage());
         }
         return mediaRecorder;
     }
