@@ -72,14 +72,27 @@
             android:layout_height="100dp"
             android:text="change"
             android:layout_weight="1" />
+        <Button
+            android:id="@+id/camera_btn_record"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="record start"
+            android:layout_weight="1" />
 
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/testre"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="2dp"
-></RelativeLayout>
+        android:elevation="2dp" />
+
+    <SurfaceView
+    android:id="@+id/surfaceview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:ignore="MissingConstraints" />
+
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"

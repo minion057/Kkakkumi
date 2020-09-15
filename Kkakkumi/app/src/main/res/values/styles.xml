@@ -9,6 +9,9 @@
         <!--Title Bar 제거-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <!--Top Bar 제거-->
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- Dialog theme. -->

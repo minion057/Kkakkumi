@@ -11,16 +11,22 @@ import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.CamcorderProfile;
 import android.media.Image;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.Display;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
@@ -65,10 +71,15 @@ public class TestActivity extends AppCompatActivity {
     int select_c = 0;
     String FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS";
 
-    File outputDirectory;
-    Button btn_capture, btn_change;
+    File outputVideo, outputPicture;
+    Button btn_capture, btn_change, btn_record;
+    Boolean recording;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+
+    MediaRecorder mediaRecorder;
+    SurfaceView surfaceView;
+    File vFile;
 
     TextView txt_notice;
 
@@ -76,28 +87,7 @@ public class TestActivity extends AppCompatActivity {
 
     Context cont;
     RelativeLayout Rela;
-    ImageView imageLE, img_virus1, img_virus2, img_virus3, img_virus4, img_virus5, img_virus6;
-
-    FaceDraw mDraw;
-
-
-    public void drawface(FirebaseVisionFace face){
-
-        if(mDraw == null){
-            mDraw = new FaceDraw(cont, face);
-            addContentView(mDraw, new ViewGroup.LayoutParams
-                    (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            return;
-        }
-        if (mDraw.getParent() != null) ((ViewGroup) mDraw.getParent()).removeView(mDraw);
-        mDraw = new FaceDraw(cont, face);
-        addContentView(mDraw, new ViewGroup.LayoutParams
-                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
-
-        //mGrap = new FaceGraphic(over, face, 0);
-    }
+    ImageView imageLE;
     //</editor-fold>
 
     @Override
@@ -105,36 +95,11 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.testre);
         imageLE = new ImageView(cont);
-        img_virus1 = new ImageView(cont);
-        img_virus2 = new ImageView(cont);
-        img_virus3 = new ImageView(cont);
-        img_virus4 = new ImageView(cont);
-        img_virus5 = new ImageView(cont);
-        img_virus6 = new ImageView(cont);
-        img_virus1.setImageResource(R.drawable.virus);
-        img_virus2.setImageResource(R.drawable.virus);
-        img_virus3.setImageResource(R.drawable.virus);
-        img_virus4.setImageResource(R.drawable.virus);
-        img_virus5.setImageResource(R.drawable.virus);
-        img_virus6.setImageResource(R.drawable.virus);
-        img_virus1.setVisibility(View.INVISIBLE);
-        img_virus2.setVisibility(View.INVISIBLE);
-        img_virus3.setVisibility(View.INVISIBLE);
-        img_virus4.setVisibility(View.INVISIBLE);
-        img_virus5.setVisibility(View.INVISIBLE);
-        img_virus6.setVisibility(View.INVISIBLE);
-        Rela.addView(imageLE);
-        Rela.addView(img_virus1);
-        Rela.addView(img_virus2);
-        Rela.addView(img_virus3);
-        Rela.addView(img_virus4);
-        Rela.addView(img_virus5);
-        Rela.addView(img_virus6);
-
-        //<editor-fold desc="변수 값 넣기">
+        txt_notice = findViewById(R.id.edu_notice);
 
         //<editor-fold desc="camerX">
         // 찍기 위한 클릭리스너
@@ -149,48 +114,34 @@ public class TestActivity extends AppCompatActivity {
 
         viewFinder = findViewById(R.id.viewFinder);
 
-        outputDirectory = getOutputDirectory();
+        // 사진 저장 경로
+        outputPicture = new File(cont.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
+        makefolder(outputPicture);
 
         cameraExecutor = Executors.newSingleThreadExecutor();
         //</editor-fold>
 
-        txt_notice = findViewById(R.id.edu_notice);
+        //<editor-fold desc="MediaRecorder">
+        // 비디오 저장 경로
+        outputVideo = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
+        makefolder(outputVideo);
+
+        recording = false;
+        surfaceView = findViewById(R.id.surfaceview);
+
+        // 녹화를 위한 클릭리스너
+        btn_record = findViewById(R.id.camera_btn_record);
+        btn_record.setOnClickListener(view ->  record());
+
         //</editor-fold>
 
-        //<editor-fold desc="camerX">
+        //</editor-fold>
+
+        // camerax start
         startCamera();
-        //</editor-fold>
     }
 
-    //<editor-fold desc="camerX">
-    private File getOutputDirectory() {
-        File dir = null;
-        /*
-        if(Build.VERSION.SDK_INT >= 29){
-            //29버전부터 getExternalStorageDirectory()이 실행되지 않아 따로 코드 작성
-            dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
-            dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
-        }else {
-            dir = new File(Environment.getExternalStorageDirectory().toString() + "/kkal");
-        }
-        try {
-            if (!dir.exists()) {
-                dir.mkdirs();
-                Log.d("File : ", dir.toString() + " 경로 생성 시도");
-            }
-        } catch (Exception e) {
-            Log.e("File : ", e.getMessage());
-        }
-        if (dir == null || !dir.exists()) { Log.d("File : ", dir.toString() + "경로 생성 실패"); }
-        else { Log.d("File : ", dir.toString() +"경로 생성 성공"); }
-         */
-        dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
-        makefolder(dir);
-        dir = new File(cont.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
-        makefolder(dir);
-        return dir;
-    }
-
+    //<editor-fold desc="파일 경로 생성">
     public void makefolder(File dir){
         try {
             if (!dir.exists()) {
@@ -203,7 +154,9 @@ public class TestActivity extends AppCompatActivity {
         if (dir == null || !dir.exists()) { Log.d("File : ", dir.toString() + "경로 생성 실패"); }
         else { Log.d("File : ", dir.toString() +"경로 생성 성공"); }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="camerX">
     private void startCamera() {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
@@ -229,7 +182,7 @@ public class TestActivity extends AppCompatActivity {
                                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                                 .build();
 
-                // 1. 한번만 실행
+                //<editor-fold desc="1. 한번만 실행">
                 /*
                 imageAnalysis.setAnalyzer(cameraExecutor, image -> {
                     int rotationDegrees = image.getImageInfo().getRotationDegrees();
@@ -244,6 +197,7 @@ public class TestActivity extends AppCompatActivity {
                                     .build();
 
                 });*/
+                //</editor-fold>
 
                 // 2. 여러번 실행 > ImageAnalysis.Analyzer class 부분을 따로 만들기
                 imageAnalysis.setAnalyzer(cameraExecutor, new LuminosityAnalyzer2());
@@ -271,7 +225,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void takePhoto() {
-        File photoFile = new File(outputDirectory, new SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg");
+        File photoFile = new File(outputPicture, new SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg");
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile).build();
         imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
@@ -292,8 +246,56 @@ public class TestActivity extends AppCompatActivity {
     }
     //</editor-fold>
 
-    public class LuminosityAnalyzer2 implements ImageAnalysis.Analyzer {
+    //<editor-fold desc="MediaRecorder 녹화">
+    public void record(){
+        if (recording) {
+            btn_record.setText("record Start");
+            try{
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        mediaRecorder.stop();
+                        mediaRecorder.release();
+                        mediaRecorder = null;
+                        recording = false;
+                    }
+                }, 100);
+            } catch (Exception e) {
+                Log.e("Video",e.getMessage());
+            }
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btn_record.setText("record Stop");
+                    recording = true;
+                    vFile = new File(outputVideo, new SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".mp4");
 
+                    mediaRecorder = new MediaRecorder();
+                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+                    mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+                    mediaRecorder.setOutputFile(vFile.toString());
+                    DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+                    mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                    //mediaRecorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
+                    /*
+                    try {
+                        mediaRecorder.prepare();
+                    } catch (Exception e) {
+                        Log.e("Video","prepare() failed : " + e.getMessage());
+                    }
+                    mediaRecorder.start();
+                     */
+                }
+            });
+        }
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="camerax 얼굴 검출">
+    public class LuminosityAnalyzer2 implements ImageAnalysis.Analyzer {
         //<editor-fold desc="firebase">
         // Real-time contour detection of multiple faces
         // 실시간 여러 얼굴의 윤곽선 검출
@@ -359,13 +361,6 @@ public class TestActivity extends AppCompatActivity {
                                         imageLE.setY(p.y /2 - 600);
                                         imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
 
-                                        img_virus1.setVisibility(View.INVISIBLE);
-                                        img_virus2.setVisibility(View.INVISIBLE);
-                                        img_virus3.setVisibility(View.INVISIBLE);
-                                        img_virus4.setVisibility(View.INVISIBLE);
-                                        img_virus5.setVisibility(View.INVISIBLE);
-                                        img_virus6.setVisibility(View.INVISIBLE);
-
                                         Log.d("Test","No Face");
                                     }
                                     for (FirebaseVisionFace face : faces) {
@@ -382,37 +377,6 @@ public class TestActivity extends AppCompatActivity {
                                             imageLE.setX(p.x * fp.getX() / imageP.getWidth() + 100);
                                             imageLE.setY(p.y * fp.getY() / imageP.getHeight() + 90);
                                             imageLE.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus1.setVisibility(View.VISIBLE);
-                                            img_virus1.setX(p.x * fp.getX() / imageP.getWidth() + 150);
-                                            img_virus1.setY(p.y * fp.getY() / imageP.getHeight() + 200);
-                                            img_virus1.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus2.setVisibility(View.VISIBLE);
-                                            img_virus2.setX(p.x * fp.getX() / imageP.getWidth() + 200);
-                                            img_virus2.setY(p.y * fp.getY() / imageP.getHeight() + 140);
-                                            img_virus2.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus3.setVisibility(View.VISIBLE);
-                                            img_virus3.setX(p.x * fp.getX() / imageP.getWidth() + 250);
-                                            img_virus3.setY(p.y * fp.getY() / imageP.getHeight() + 210);
-                                            img_virus3.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus4.setVisibility(View.VISIBLE);
-                                            img_virus4.setX(p.x * fp.getX() / imageP.getWidth() + 300);
-                                            img_virus4.setY(p.y * fp.getY() / imageP.getHeight() + 160);
-                                            img_virus4.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus5.setVisibility(View.VISIBLE);
-                                            img_virus5.setX(p.x * fp.getX() / imageP.getWidth() + 350);
-                                            img_virus5.setY(p.y * fp.getY() / imageP.getHeight() + 200);
-                                            img_virus5.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
-                                            img_virus6.setVisibility(View.VISIBLE);
-                                            img_virus6.setX(p.x * fp.getX() / imageP.getWidth() + 400);
-                                            img_virus6.setY(p.y * fp.getY() / imageP.getHeight() + 80);
-                                            img_virus6.setLayoutParams(new RelativeLayout.LayoutParams(50, 50));
-
                                             break;
                                         }
                                     }
@@ -428,6 +392,5 @@ public class TestActivity extends AppCompatActivity {
             imageP.close();
         }
     }
-
-
+    //</editor-fold>
 }

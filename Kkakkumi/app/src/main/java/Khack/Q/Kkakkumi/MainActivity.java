@@ -81,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), Test2Activity.class);
                         break;
                     case 2: //기침막기
-                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        intent = new Intent(getApplicationContext(), VideoActivity.class);
                         break;
                     case 3: //마스크
-                        intent = new Intent(getApplicationContext(), EduActivity.class);
+                        intent = new Intent(getApplicationContext(), recordActivity.class);
                         break;
                     default:
                         Log.d("V_Error", "menu : "+ Integer.toString(menu_num));
@@ -183,6 +183,12 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             temp += Manifest.permission.CAMERA + " ";
+        }
+
+        // 화면 녹화를 위한 오디오 녹음 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.RECORD_AUDIO + " ";
         }
 
         if (TextUtils.isEmpty(temp) == false) {
