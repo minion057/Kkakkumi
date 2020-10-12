@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import Khack.Q.Kkakkumi.JustClass.BackPressHandler;
+
 public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
 
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     //<editor-fold desc="페이지 넘기기">
     //뒤로가기(back key) 제어(종료)관리 클래스 객체
-    Button btnEduStart, btnBookStart, btncopyright;
+    Button btnEduStart, btnBookStart, btnGalleryStart, btncopyright;
     // 페이지 넘기기 객체
     Intent intent;
     //</editor-fold>
@@ -100,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         btnBookStart = findViewById(R.id.main_btn_book);
         btnBookStart.setOnClickListener(view -> {
             intent = new Intent(getApplicationContext(), BookActivity.class);
+            startActivity(intent);
+        });
+        //</editor-fold>
+        //<editor-fold desc="갤러리 화면 이동">
+        // 갤러리 화면으로 넘어가기 위한 클릭리스너
+        btnGalleryStart = findViewById(R.id.main_btn_gallery);
+        btnGalleryStart.setOnClickListener(view -> {
+            intent = new Intent(getApplicationContext(), GalleryActivity.class);
             startActivity(intent);
         });
         //</editor-fold>

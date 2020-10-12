@@ -2,26 +2,32 @@ package Khack.Q.Kkakkumi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
+import android.hardware.display.DisplayManager;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -34,19 +40,20 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
-import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceContour;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import Khack.Q.Kkakkumi.Service.RecordService;
 
 public class Test2Activity extends AppCompatActivity {
 
@@ -54,20 +61,22 @@ public class Test2Activity extends AppCompatActivity {
     Preview preview;
     Camera camera;
     PreviewView viewFinder;
+    TextView txt_notice;
 
     ImageAnalysis imageAnalysis;
     ExecutorService cameraExecutor;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
-    TextView txt_notice;
-    //</editor-fold>
+    String videoFile;
+    private MediaProjection mediaProjection;
+    private static final int REQUEST_CODE_MediaProjection = 101;
+    Intent inte;
+    DisplayMetrics displayMetrics;
 
     Context cont;
     RelativeLayout Rela;
     ImageView imageLE; //추가할 이미지 변수 여기에 넣기
-
-    FaceDraw mDraw;
     //</editor-fold>
 
     @Override
@@ -75,21 +84,21 @@ public class Test2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
 
+        //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.e_testre);
         imageLE = new ImageView(cont);
         Rela.addView(imageLE);
         /*
-        * 이미지를 생성하는 방법
-        * 1. 위에 변수 선언 부분에 변수명 추가
-        * 2. 여기에 imageLE처럼 imageView 똑같이 따라해
-        * 3. img_virus1.setImageResource(R.drawable.virus); 이런식의 구조를 써
-        * (img_virus1 = imageLE 똑같이 변수명, set >> 함수니까 그대로쳐, ()안에는 R.drawable.너가 원하는 이미지명 >> res폴더 drawable에 있는친구들)
-        * 4. 이미지를 안보이게 하는 경우 > img_virus1.setVisibility(View.INVISIBLE)
-        * 5. 이미지를 안보이게 하다가 보이게 하는 겨우 > img_virus1.setVisibility(View.VISIBLE)
-        * 6. 이미지를 화면에 추가 > Rela.addView(imageLE);
-        * */
-        //<editor-fold desc="변수 값 넣기">
+         * 이미지를 생성하는 방법
+         * 1. 위에 변수 선언 부분에 변수명 추가
+         * 2. 여기에 imageLE처럼 imageView 똑같이 따라해
+         * 3. img_virus1.setImageResource(R.drawable.virus); 이런식의 구조를 써
+         * (img_virus1 = imageLE 똑같이 변수명, set >> 함수니까 그대로쳐, ()안에는 R.drawable.너가 원하는 이미지명 >> res폴더 drawable에 있는친구들)
+         * 4. 이미지를 안보이게 하는 경우 > img_virus1.setVisibility(View.INVISIBLE)
+         * 5. 이미지를 안보이게 하다가 보이게 하는 겨우 > img_virus1.setVisibility(View.VISIBLE)
+         * 6. 이미지를 화면에 추가 > Rela.addView(imageLE);
+         * */
 
         //<editor-fold desc="camerX">
         viewFinder = findViewById(R.id.e_viewFinder);
@@ -100,10 +109,172 @@ public class Test2Activity extends AppCompatActivity {
         txt_notice = findViewById(R.id.e_notice);
         //</editor-fold>
 
+        //<editor-fold desc="recordvideo">
+
+        //videoFile = setvideoname();
+
+        videoFile = setvideoname();
+
+        inte = new Intent(this, RecordService.class);
+        if (Build.VERSION.SDK_INT >= 26) {
+            this.startForegroundService(inte);
+        }
+        else {
+            this.startService(inte);
+        }
+
+        displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+
         //<editor-fold desc="camerX">
         startCamera();
         //</editor-fold>
+
+        startrecord();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                stoprecord();
+            }
+        }, 7000);
+        //</editor-fold>
     }
+
+    //<editor-fold desc="recordvideo">
+    public String setvideoname(){
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
+        String menu="";
+        switch (getIntent().getExtras().getInt("menu")){
+            case 0: //양치
+                menu = "양치";
+                break;
+            case 1: //손씻기
+                menu = "손씻기";
+                break;
+            case 2: //기침막기
+                menu = "기침막기";
+                break;
+            case 3: //마스크
+                menu = "마스크";
+                break;
+            default:
+                Log.d("V_Error", "menu No : "+String.valueOf(getIntent().getExtras().getInt("menu")));
+                break;
+        }
+        String name = this.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString()
+                        + "/" + mFormat.format(date) + "_" + menu + ".mp4";
+        return name;
+    }
+
+    public void startrecord(){
+        // 미디어 프로젝션 요청
+        startMediaProjection();
+    }
+
+    public void stoprecord(){
+        if (mediaProjection != null) {
+            mediaProjection.stop();
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");//webm");
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // 녹화중이면 종료하기
+        if (mediaProjection != null) {
+            mediaProjection.stop();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, final int resultCode, @Nullable final Intent data) {
+        // 미디어 프로젝션 응답
+        if (requestCode == REQUEST_CODE_MediaProjection && resultCode == RESULT_OK) {
+            screenRecorder(resultCode, data);
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 1. 미디어 프로젝션 요청
+     */
+    private void startMediaProjection() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+            startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), REQUEST_CODE_MediaProjection);
+        }
+    }
+
+    /**
+     * 화면녹화
+     *
+     * @param resultCode
+     * @param data
+     */
+    private void screenRecorder(int resultCode, @Nullable Intent data) {
+        final MediaRecorder screenRecorder = createRecorder();
+        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);
+        MediaProjection.Callback callback = new MediaProjection.Callback() {
+            @Override
+            public void onStop() {
+                super.onStop();
+                if (screenRecorder != null) {
+                    screenRecorder.stop();
+                    screenRecorder.reset();
+                    screenRecorder.release();
+                }
+                mediaProjection.unregisterCallback(this);
+                mediaProjection = null;
+            }
+        };
+        mediaProjection.registerCallback(callback, null);
+
+        //DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        mediaProjection.createVirtualDisplay(
+                "sample",
+                displayMetrics.widthPixels, displayMetrics.heightPixels, displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                screenRecorder.getSurface(), null, null);
+
+        //녹화한 영상 재생
+        screenRecorder.start();
+    }
+
+    /**
+     * 미디어 레코더
+     *
+     * @return
+     */
+    private MediaRecorder createRecorder() {
+        MediaRecorder mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);//.WEBM);
+        mediaRecorder.setOutputFile(videoFile);
+        mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);//VP8);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);//.OPUS);
+        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
+        mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            Log.e("prepare", "IllegalStateException : " + e.getMessage());
+        } catch (IOException e) {
+            Log.e("prepare", "IOException : " + e.getMessage());
+        }
+        return mediaRecorder;
+    }
+    //</editor-fold>
 
     //<editor-fold desc="camerX">
     private void startCamera() {

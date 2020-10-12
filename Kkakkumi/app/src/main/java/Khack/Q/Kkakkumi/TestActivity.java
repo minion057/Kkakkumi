@@ -121,20 +121,6 @@ public class TestActivity extends AppCompatActivity {
         cameraExecutor = Executors.newSingleThreadExecutor();
         //</editor-fold>
 
-        //<editor-fold desc="MediaRecorder">
-        // 비디오 저장 경로
-        outputVideo = new File(cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "");
-        makefolder(outputVideo);
-
-        recording = false;
-        surfaceView = findViewById(R.id.surfaceview);
-
-        // 녹화를 위한 클릭리스너
-        btn_record = findViewById(R.id.camera_btn_record);
-        btn_record.setOnClickListener(view ->  record());
-
-        //</editor-fold>
-
         //</editor-fold>
 
         // camerax start
@@ -243,53 +229,6 @@ public class TestActivity extends AppCompatActivity {
                         Log.e("Camera", "Photo capture failed: "+ exc.getMessage());
                     }
                 });
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="MediaRecorder 녹화">
-    public void record(){
-        if (recording) {
-            btn_record.setText("record Start");
-            try{
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        mediaRecorder.stop();
-                        mediaRecorder.release();
-                        mediaRecorder = null;
-                        recording = false;
-                    }
-                }, 100);
-            } catch (Exception e) {
-                Log.e("Video",e.getMessage());
-            }
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    btn_record.setText("record Stop");
-                    recording = true;
-                    vFile = new File(outputVideo, new SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".mp4");
-
-                    mediaRecorder = new MediaRecorder();
-                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-                    mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
-                    mediaRecorder.setOutputFile(vFile.toString());
-                    DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-                    mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-                    //mediaRecorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
-                    /*
-                    try {
-                        mediaRecorder.prepare();
-                    } catch (Exception e) {
-                        Log.e("Video","prepare() failed : " + e.getMessage());
-                    }
-                    mediaRecorder.start();
-                     */
-                }
-            });
-        }
     }
     //</editor-fold>
 

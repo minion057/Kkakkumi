@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_width="wrap_content"
+    android:layout_height="700dp"
     android:adjustViewBounds="true"
     tools:context=".InfoActivity"
     android:orientation="vertical"
-    android:padding="50dp"
+    android:padding="20dp"
     android:background="@drawable/backgrond_roundsquare_pop">
 
     <RelativeLayout
@@ -88,7 +88,7 @@
                 android:fontFamily="@font/jalnan"
                 android:gravity="fill"
                 android:layout_marginTop="10dp"
-                android:text="이 애플리케이션은 ㈜여기어때컴퍼니가 제공한 여기어때 잘난체가 적용되어 있습니다."
+                android:text="이 애플리케이션은 ㈜여기어때컴퍼니가 제공한 여기어때 잘난체 폰트와 미리캔버스에서 제공하는 캐릭터가 적용되어 있습니다."
                 android:textColor="@color/colorinfo" />
         </LinearLayout>
     </ScrollView>

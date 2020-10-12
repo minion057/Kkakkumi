@@ -1,4 +1,4 @@
-package Khack.Q.Kkakkumi;
+package Khack.Q.Kkakkumi.JustClass;
 
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
