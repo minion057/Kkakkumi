@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch (menu_num){
                     case 0: //양치
-                        intent = new Intent(getApplicationContext(), TestActivity.class);
+                        intent = new Intent(getApplicationContext(), Test3Activity.class);
                         break;
                     case 1: //손씻기
                         intent = new Intent(getApplicationContext(), Test2Activity.class);
