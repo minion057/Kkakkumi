@@ -136,7 +136,7 @@ public class Test2Activity extends AppCompatActivity {
             public void run() {
                 stoprecord();
             }
-        }, 7000);
+        }, 7000); //-2ch
         //</editor-fold>
     }
 
@@ -178,7 +178,7 @@ public class Test2Activity extends AppCompatActivity {
             mediaProjection.stop();
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");//webm");
+            intent.setDataAndType(Uri.parse(videoFile), "video/webm");//mp4");
             startActivity(intent);
         }
     }
@@ -256,12 +256,12 @@ public class Test2Activity extends AppCompatActivity {
         MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);//.WEBM);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.WEBM);//MPEG_4);.
         mediaRecorder.setOutputFile(videoFile);
         mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);//VP8);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);//.OPUS);
-        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.VP8);//H264);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);//.HE_AAC);
+        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);//.QUALITY_HIGH);
         mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
         mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
 
