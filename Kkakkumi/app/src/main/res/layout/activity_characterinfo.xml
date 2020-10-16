@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="700dp"
+    android:adjustViewBounds="true"
+    tools:context=".CharacterInfoActivity"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/backgrond_roundsquare_pop">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/tmoney"
+        android:gravity="center_horizontal"
+        android:autoSizeTextType="uniform"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/backgrond_roundsquare_main"
+        android:textColor="@color/colorMenu"
+        android:text="보상 스티커 획득!" />
+
+    <ImageView
+        android:id="@+id/characterinfo_img"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/img_book_character_3" />
+
+    <TextView
+        android:id="@+id/characterinfo_name"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="0.5"
+        android:padding="5dp"
+        android:fontFamily="@font/tmoney"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:autoSizeTextType="uniform"
+        android:textColor="@color/colorMenu"
+        android:text="토토" />
+
+    <Button
+        android:id="@+id/character_pop_btn_Close"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="0.7"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/backgrond_btnstart"
+        android:fontFamily="@font/jalnan"
+        android:padding="5dp"
+        android:text="닫기"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="20dp"
+        android:textColor="@color/colorTitle2"/>
+
+</LinearLayout>

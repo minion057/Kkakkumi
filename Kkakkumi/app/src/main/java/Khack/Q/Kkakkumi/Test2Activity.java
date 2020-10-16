@@ -18,9 +18,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +49,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -83,6 +86,9 @@ public class Test2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
+
+        //화면 꺼짐 방지
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //<editor-fold desc="변수 값 넣기">
         cont = this;
@@ -136,7 +142,7 @@ public class Test2Activity extends AppCompatActivity {
             public void run() {
                 stoprecord();
             }
-        }, 7000); //-2ch
+        }, 182000); //-2초
         //</editor-fold>
     }
 
@@ -178,7 +184,7 @@ public class Test2Activity extends AppCompatActivity {
             mediaProjection.stop();
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(videoFile), "video/webm");//mp4");
+            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");
             startActivity(intent);
         }
     }
@@ -190,6 +196,24 @@ public class Test2Activity extends AppCompatActivity {
             mediaProjection.stop();
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        stoprecord();
+
+        try{
+            File file = new File(videoFile);
+            if(file.exists()){
+                file.delete();
+                Toast.makeText(Test2Activity.this, "교육 미완료로 녹화중이던 비디오 삭제!", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Log.d("Video",e.getMessage());
+            Toast.makeText(Test2Activity.this, "교육 미완료로 녹화중이던 비디오 삭제 실패!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -244,7 +268,7 @@ public class Test2Activity extends AppCompatActivity {
                 screenRecorder.getSurface(), null, null);
 
         //녹화한 영상 재생
-        screenRecorder.start();
+        //screenRecorder.start();
     }
 
     /**
@@ -256,11 +280,11 @@ public class Test2Activity extends AppCompatActivity {
         MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.WEBM);//MPEG_4);.
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setOutputFile(videoFile);
         mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.VP8);//H264);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);//.HE_AAC);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
         CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);//.QUALITY_HIGH);
         mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
         mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
@@ -390,7 +414,6 @@ public class Test2Activity extends AppCompatActivity {
                                 faces -> {
                                     Log.d("Test", "start");
                                     if(faces.size() <= 0){
-                                        //drawface(null);
                                         txt_notice.setText("얼굴을 보여줘!");
                                         txt_notice.setVisibility(View.VISIBLE);
 
@@ -420,18 +443,10 @@ public class Test2Activity extends AppCompatActivity {
                                             break;
                                         }
                                          */
-
-                                        //s너가 시간순대로 이미지를 띄우고 안보이게 하고 그러는 코드를 ㅕㅇ기에 짜면돼
-                                        //1. 얼굴이 검출되는 순간 시간을 저장할 변수, 현재 시간을 가지고 있는 변수
-                                        //2. imageLE 변수 옆에 이름 하나 더써서 만들어
-                                        //3. 위 1번에 적힌 두 변수를 계산하여 5초가 지나면 straight1를 띄우고
-                                        //4. 거기서 또 10초가 지나면 fold2가 나오게끔 코드를 짜보세요
-                                        //5. 단, 두개의 이미지는 해당 시간에만 보입니다.
-                                        //즉, 처음에는 치아배경만 보이다가 > 5초가 지나면 straight1가 띄워지고
-                                        //10초가 흐르면 straight1는 사라지고 fold2가 자연스레 나옴
-                                        // 이미지는 2번에 적힌 변수를 활용하여 5초가 나오면 invisible에서 visible로 되고
-                                        // 처음에 set을 straight1, 두번째 fold를
-                                        // fold에서 5초가 지나면 visible을 invisible로 변경
+                                        /*
+                                        * 5-1. 교육 끝나고 0인 데이터만 불러오기 - 랜덤으로 하나 띄우기 > db 값 1로 변경
+                                        * 5-2. 0인 데이터가 없다면 걍 아무거나 띄우기
+                                        * */
 
                                     }
                                 })

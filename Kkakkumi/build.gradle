@@ -3,6 +3,9 @@
 buildscript {
     
     repositories {
+        //gif
+        mavenCentral()
+
         google()
         jcenter()
         
@@ -19,9 +22,12 @@ buildscript {
 
 allprojects {
     repositories {
+        //gif
+        mavenCentral()
+
         google()
         jcenter()
-        
+
     }
 }
 

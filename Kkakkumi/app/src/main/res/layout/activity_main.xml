@@ -71,11 +71,11 @@
             android:layout_weight="1.7"
             android:background="@drawable/backgrond_roundsquare_main"
             android:gravity="center_horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:padding="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:text="양치"
+            android:fontFamily="@font/tmoney"
             android:textStyle="bold"
             android:textColor="@color/colorMenu"
             android:layout_gravity="center_horizontal"
@@ -105,9 +105,9 @@
             android:id="@+id/main_img_character"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/sheep_flod1" />
+            android:layout_margin="20dp"
+            app:srcCompat="@drawable/img_main_character_0" />
 
     </RelativeLayout>
 

@@ -12,7 +12,7 @@ public class ValManagement {
     // 저장 경로
     private File outputPicture, outputVideo;
     // 경로 밑 파일 리스트
-    private File[] VideoList;
+    private File[] VideoList = null;
     //</editor-fold>
 
     //<editor-fold desc="첫 시작, 변수 값 설정">

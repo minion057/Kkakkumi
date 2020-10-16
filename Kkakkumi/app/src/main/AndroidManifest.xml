@@ -39,16 +39,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GalleryActivity"/>
-        <activity android:name=".Gallery2Activity"/>
+        <activity android:name=".GalleryActivity" />
         <activity android:name=".VideoActivity" />
         <activity android:name=".recordActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".Test2Activity" />
+        <activity android:name=".Test4Activity" />
         <activity android:name=".Test3Activity" />
-        <activity android:name=".EduActivity" />
         <activity
             android:name=".InfoActivity"
+            android:theme="@style/popupTheme" />
+        <activity
+            android:name=".VideoInfoActivity"
+            android:theme="@style/popupTheme" />
+        <activity
+            android:name=".CharacterInfoActivity"
             android:theme="@style/popupTheme" />
         <activity android:name=".BookActivity" />
         <activity android:name=".SplashActivity">

@@ -8,18 +8,21 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import Khack.Q.Kkakkumi.JustClass.BackPressHandler;
+import Khack.Q.Kkakkumi.JustClass.DBcharacterHelper;
 
 public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
@@ -50,7 +53,13 @@ public class MainActivity extends AppCompatActivity {
     TextView txtMenu;
     // 버튼 요소
     Button btnMenu_pre, btnMenu_af;
+    // 캐릭터 이미지
+    ImageView imgCharacter;
+    private int[] imgdrawList = {R.drawable.img_main_character_0, R.drawable.img_main_character_1, R.drawable.img_main_character_2, R.drawable.img_main_character_3};
     //</editor-fold>
+
+    DBcharacterHelper dbHelper;
+    SQLiteDatabase db;
 
     //</editor-fold>
 
@@ -129,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold desc="교육 메뉴">
+        // 메뉴에 맞게 이미지 변경하기 위한 변수 값 입력
+        imgCharacter = findViewById(R.id.main_img_character);
         // 메뉴 글자를 보여줄 요소
         txtMenu = findViewById(R.id.main_txt_Menu);
         // 메뉴를 조절할 버튼
@@ -137,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             menu_num -= 1;
             if(0 > menu_num) menu_num = 3;
             txtMenu.setText(menus[menu_num]);
+            imgCharacter.setImageResource(imgdrawList[menu_num]);
         });
         btnMenu_af = (Button)findViewById(R.id.main_btn_menu2);
         btnMenu_af.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 menu_num += 1;
                 if(menus.length <= menu_num) menu_num = 0;
                 txtMenu.setText(menus[menu_num]);
+                imgCharacter.setImageResource(imgdrawList[menu_num]);
             }
         });
         //</editor-fold>
@@ -156,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
             // 아니라면 권한 체크 실행
         else checkSelfPermission();
         //</editor-fold>
+
+        dbHelper = new DBcharacterHelper(this);
+        //DB 삽입 모드
+        db = dbHelper.getWritableDatabase();
     }
 
     //<editor-fold desc="뒤로가기(back key) 관리">

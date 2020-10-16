@@ -1,5 +1,0 @@
-<resources>
-    <dimen name="pageMargin">10dp</dimen> <!--각 항목 보이는 너비-->
-    <dimen name="offset">50dp</dimen> <!--옆 항목 보이는 너비-->
-    <dimen name="GalleryMarginAndOffset">30dp</dimen>
-</resources>

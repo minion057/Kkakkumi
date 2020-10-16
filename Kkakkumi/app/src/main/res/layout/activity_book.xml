@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BookActivity"
-    android:background="@color/colorBookback"
+    android:background="@color/colorbackground"
     android:padding="50dp"
     android:orientation="vertical">
 
@@ -18,13 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/jalnan"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="25dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:background="@drawable/backgrond_roundsquare_book"
-            android:textColor="@color/colorTitle2"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="@drawable/backgrond_roundsquare_main"
+            android:textColor="@color/colorMenu"
             android:text="깔끄미 캐릭터 수집" />
     </RelativeLayout>
 
@@ -36,170 +38,189 @@
         android:fillViewport="true">
 
         <TableLayout
+            android:id="@+id/book_table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9">
-
+            android:layout_height="wrap_content">
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/book_img_c0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/img_book_character_0_black" />
 
                 <ImageView
                     android:id="@+id/book_img_c1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@raw/sheep_flod" />
+                    app:srcCompat="@drawable/img_book_character_1_black" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="꼬꼬" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="슈슈" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/book_img_c2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_straight_mask" />
+                    app:srcCompat="@drawable/img_book_character_2_black" />
 
                 <ImageView
                     android:id="@+id/book_img_c3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_flod1" />
+                    app:srcCompat="@drawable/img_book_character_3_black" />
             </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="타타" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="토토" />
+            </TableRow>
+
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/book_img_c11"
+                    android:id="@+id/book_img_c4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@raw/sheep_flod" />
+                    app:srcCompat="@drawable/img_book_character_4_black" />
 
                 <ImageView
-                    android:id="@+id/book_img_c12"
+                    android:id="@+id/book_img_c5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_straight_mask" />
-
-                <ImageView
-                    android:id="@+id/book_img_c13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_flod1" />
+                    app:srcCompat="@drawable/img_book_character_5_black" />
             </TableRow>
+
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/book_img_c12"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@raw/sheep_flod" />
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="댕댕" />
 
-                <ImageView
-                    android:id="@+id/book_img_c22"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_straight_mask" />
-
-                <ImageView
-                    android:id="@+id/book_img_c32"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_flod1" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/book_img_c13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@raw/sheep_flod" />
-
-                <ImageView
-                    android:id="@+id/book_img_c23"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_straight_mask" />
-
-                <ImageView
-                    android:id="@+id/book_img_c33"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_flod1" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/book_img_c14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@raw/sheep_flod" />
-
-                <ImageView
-                    android:id="@+id/book_img_c24"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_straight_mask" />
-
-                <ImageView
-                    android:id="@+id/book_img_c34"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/sheep_flod1" />
+                    android:fontFamily="@font/tmoney"
+                    android:gravity="center"
+                    android:autoSizeTextType="uniform"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/backgrond_roundsquare_main"
+                    android:textColor="@color/colorMenu"
+                    android:text="끼끼" />
             </TableRow>
         </TableLayout>
     </ScrollView>
-
 </LinearLayout>

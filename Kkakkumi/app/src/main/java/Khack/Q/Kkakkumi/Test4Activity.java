@@ -18,9 +18,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +46,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,6 +56,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import Khack.Q.Kkakkumi.Service.RecordService;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 public class Test4Activity extends AppCompatActivity {
 
@@ -76,28 +81,29 @@ public class Test4Activity extends AppCompatActivity {
     Context cont;
     RelativeLayout Rela;
     ImageView imageLE; //추가할 이미지 변수 여기에 넣기
+
+    //<editor-fold desc="gif 재생">
+    GifImageView gif;
+    GifDrawable gifFromResource;
+    Boolean recordAnswer = false, gifplay = false;
+    Integer gifstopPosition = 0;
+    //</editor-fold>
+
     //</editor-fold>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test2);
+        setContentView(R.layout.activity_test4);
+
+        //화면 꺼짐 방지
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.e_testre);
         imageLE = new ImageView(cont);
         Rela.addView(imageLE);
-        /*
-         * 이미지를 생성하는 방법
-         * 1. 위에 변수 선언 부분에 변수명 추가
-         * 2. 여기에 imageLE처럼 imageView 똑같이 따라해
-         * 3. img_virus1.setImageResource(R.drawable.virus); 이런식의 구조를 써
-         * (img_virus1 = imageLE 똑같이 변수명, set >> 함수니까 그대로쳐, ()안에는 R.drawable.너가 원하는 이미지명 >> res폴더 drawable에 있는친구들)
-         * 4. 이미지를 안보이게 하는 경우 > img_virus1.setVisibility(View.INVISIBLE)
-         * 5. 이미지를 안보이게 하다가 보이게 하는 겨우 > img_virus1.setVisibility(View.VISIBLE)
-         * 6. 이미지를 화면에 추가 > Rela.addView(imageLE);
-         * */
 
         //<editor-fold desc="camerX">
         viewFinder = findViewById(R.id.e_viewFinder);
@@ -106,6 +112,18 @@ public class Test4Activity extends AppCompatActivity {
         //</editor-fold>
 
         txt_notice = findViewById(R.id.e_notice);
+
+        //<editor-fold desc="gif">
+        gif = findViewById(R.id.edu_gif);
+        try {
+            gifFromResource = new GifDrawable( getResources(), R.raw.testgif );
+            gif.setImageDrawable(gifFromResource);
+            gifFromResource.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //</editor-fold>
+
         //</editor-fold>
 
         //<editor-fold desc="recordvideo">
@@ -130,12 +148,6 @@ public class Test4Activity extends AppCompatActivity {
         //</editor-fold>
 
         startrecord();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                stoprecord();
-            }
-        }, 7000); //-2ch
         //</editor-fold>
     }
 
@@ -177,8 +189,8 @@ public class Test4Activity extends AppCompatActivity {
             mediaProjection.stop();
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(videoFile), "video/webm");//mp4");
-            startActivity(intent);
+            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");
+            //startActivity(intent);
         }
     }
 
@@ -188,12 +200,34 @@ public class Test4Activity extends AppCompatActivity {
         if (mediaProjection != null) {
             mediaProjection.stop();
         }
+
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mediaProjection == null) return;
+
+        stoprecord();
+
+        try{
+            File file = new File(videoFile);
+            if(file.exists()){
+                file.delete();
+                Toast.makeText(Test4Activity.this, "교육 미완료로 녹화중이던 비디오 삭제!", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Log.d("Video",e.getMessage());
+            Toast.makeText(Test4Activity.this, "교육 미완료로 녹화중이던 비디오 삭제 실패!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, @Nullable final Intent data) {
         // 미디어 프로젝션 응답
+        recordAnswer = true;
         if (requestCode == REQUEST_CODE_MediaProjection && resultCode == RESULT_OK) {
             screenRecorder(resultCode, data);
             return;
@@ -235,8 +269,6 @@ public class Test4Activity extends AppCompatActivity {
             }
         };
         mediaProjection.registerCallback(callback, null);
-
-        //DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
         mediaProjection.createVirtualDisplay(
                 "sample",
                 displayMetrics.widthPixels, displayMetrics.heightPixels, displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
@@ -255,11 +287,11 @@ public class Test4Activity extends AppCompatActivity {
         MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.WEBM);//MPEG_4);.
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setOutputFile(videoFile);
         mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.VP8);//H264);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.OPUS);//.HE_AAC);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
         CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);//.QUALITY_HIGH);
         mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
         mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
@@ -388,23 +420,31 @@ public class Test4Activity extends AppCompatActivity {
                         .addOnSuccessListener(
                                 faces -> {
                                     Log.d("Test", "start");
-                                    if(faces.size() <= 0){
-                                        //drawface(null);
-                                        txt_notice.setText("얼굴을 보여줘!");
-                                        txt_notice.setVisibility(View.VISIBLE);
+                                    if(recordAnswer && mediaProjection != null){
+                                        if(faces.size() <= 0){
+                                            txt_notice.setText("얼굴을 보여줘!");
+                                            txt_notice.setVisibility(View.VISIBLE);
 
-                                        imageLE.setImageResource(R.drawable.backgrond_btnstart);
-                                        imageLE.setX(p.x / 2 -400);
-                                        imageLE.setY(p.y /2 - 600);
-                                        imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
+                                            imageLE.setVisibility(View.VISIBLE);
+                                            imageLE.setImageResource(R.drawable.backgrond_btnstart);
+                                            imageLE.setX(p.x / 2 -400);
+                                            imageLE.setY(p.y /2 - 600);
+                                            imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
 
-                                        Log.d("Test","No Face");
-                                    }
-                                    for (FirebaseVisionFace face : faces) {
-                                        //drawface(face);
-                                        txt_notice.setText("잘하고 있어!");
-
-                                        Log.d("Test","Face bounds : " + face.getBoundingBox());
+                                            gif.setVisibility(View.INVISIBLE);
+                                            if(gifplay) {
+                                                gifplay = false;
+                                                gifstopPosition = gifFromResource.getCurrentPosition();
+                                                gifFromResource.stop();
+                                            }
+                                            Log.d("Test","No Face");
+                                        }
+                                        for (FirebaseVisionFace face : faces) {
+                                            txt_notice.setText("잘하고 있어!");
+                                            imageLE.setVisibility(View.INVISIBLE);
+                                            checkgifend();
+                                            gif.setVisibility(View.VISIBLE);
+                                            Log.d("Test","Face bounds : " + face.getBoundingBox());
                                         /*
                                         List<FirebaseVisionPoint> leftEyeContour =
                                                 face.getContour(FirebaseVisionFaceContour.LEFT_EYE).getPoints();
@@ -419,32 +459,46 @@ public class Test4Activity extends AppCompatActivity {
                                             break;
                                         }
                                          */
-
-                                        //s너가 시간순대로 이미지를 띄우고 안보이게 하고 그러는 코드를 ㅕㅇ기에 짜면돼
-                                        //1. 얼굴이 검출되는 순간 시간을 저장할 변수, 현재 시간을 가지고 있는 변수
-                                        //2. imageLE 변수 옆에 이름 하나 더써서 만들어
-                                        //3. 위 1번에 적힌 두 변수를 계산하여 5초가 지나면 straight1를 띄우고
-                                        //4. 거기서 또 10초가 지나면 fold2가 나오게끔 코드를 짜보세요
-                                        //5. 단, 두개의 이미지는 해당 시간에만 보입니다.
-                                        //즉, 처음에는 치아배경만 보이다가 > 5초가 지나면 straight1가 띄워지고
-                                        //10초가 흐르면 straight1는 사라지고 fold2가 자연스레 나옴
-                                        // 이미지는 2번에 적힌 변수를 활용하여 5초가 나오면 invisible에서 visible로 되고
-                                        // 처음에 set을 straight1, 두번째 fold를
-                                        // fold에서 5초가 지나면 visible을 invisible로 변경
-
+                                        }
                                     }
                                 })
                         .addOnFailureListener(
                                 e -> Log.d("Test", "fail"));
-
             }catch (Exception ex){
                 Log.e("Error", "Why : "+ex.getMessage());
             }
-
             // 4.
             imageP.close();
         }
     }
 
+    public void checkgifend(){
+        if (gifstopPosition >= 4670
+                || gifFromResource.getCurrentPosition() >= 4670){
 
+            if(gifplay) {
+                gifplay = false;
+                gifstopPosition = gifFromResource.getCurrentPosition();
+                gifFromResource.stop();
+
+                //gif 재생 끝남 보상 스티커 팝업
+                Intent intent = new Intent(getApplicationContext(), CharacterInfoActivity.class);
+                startActivityForResult(intent,1);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        stoprecord();
+                        finish();
+                    }
+                }, 2000); //-2초
+            }
+        }else{
+            if(!gifplay) {
+                gifplay = true;
+                gifFromResource.seekTo(gifstopPosition);
+                gifFromResource.start();
+            }
+        }
+
+    }
 }
