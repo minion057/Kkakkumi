@@ -53,7 +53,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_0_black" />
+                    app:srcCompat="@drawable/img_book_character_0" />
 
                 <ImageView
                     android:id="@+id/book_img_c1"
@@ -63,7 +63,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_1_black" />
+                    app:srcCompat="@drawable/img_book_character_1" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_2_black" />
+                    app:srcCompat="@drawable/img_book_character_2" />
 
                 <ImageView
                     android:id="@+id/book_img_c3"
@@ -123,7 +123,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_3_black" />
+                    app:srcCompat="@drawable/img_book_character_3" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
@@ -173,7 +173,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_4_black" />
+                    app:srcCompat="@drawable/img_book_character_4" />
 
                 <ImageView
                     android:id="@+id/book_img_c5"
@@ -183,7 +183,7 @@
                     android:padding="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/img_book_character_5_black" />
+                    app:srcCompat="@drawable/img_book_character_5" />
             </TableRow>
 
 

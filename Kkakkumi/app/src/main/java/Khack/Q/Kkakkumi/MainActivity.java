@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 import Khack.Q.Kkakkumi.JustClass.BackPressHandler;
-import Khack.Q.Kkakkumi.JustClass.DBcharacterHelper;
 
 public class MainActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
@@ -58,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private int[] imgdrawList = {R.drawable.img_main_character_0, R.drawable.img_main_character_1, R.drawable.img_main_character_2, R.drawable.img_main_character_3};
     //</editor-fold>
 
-    DBcharacterHelper dbHelper;
-    SQLiteDatabase db;
-
     //</editor-fold>
 
     @Override
@@ -84,23 +79,24 @@ public class MainActivity extends AppCompatActivity {
         btnEduStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (menu_num){
+                /*switch (menu_num){
                     case 0: //양치
                         intent = new Intent(getApplicationContext(), Test3Activity.class);
                         break;
                     case 1: //손씻기
-                        intent = new Intent(getApplicationContext(), Test4Activity.class);
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
                         break;
                     case 2: //기침막기
-                        intent = new Intent(getApplicationContext(), Test4Activity.class);
+                        intent = new Intent(getApplicationContext(), EduActivity.class);
                         break;
                     case 3: //마스크
-                        intent = new Intent(getApplicationContext(), recordActivity.class);
+                        intent = new Intent(getApplicationContext(), EduActivity.class); //recordActivity.class - 캡쳐
                         break;
                     default:
                         Log.d("V_Error", "menu : "+ Integer.toString(menu_num));
                         return;
-                }
+                }*/
+                intent = new Intent(getApplicationContext(), EduActivity.class);
                 intent.putExtra("menu", menu_num);
                 startActivity(intent);
             }
@@ -169,10 +165,6 @@ public class MainActivity extends AppCompatActivity {
             // 아니라면 권한 체크 실행
         else checkSelfPermission();
         //</editor-fold>
-
-        dbHelper = new DBcharacterHelper(this);
-        //DB 삽입 모드
-        db = dbHelper.getWritableDatabase();
     }
 
     //<editor-fold desc="뒤로가기(back key) 관리">

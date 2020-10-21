@@ -1,6 +1,7 @@
 package Khack.Q.Kkakkumi;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
+
+import Khack.Q.Kkakkumi.JustClass.ValManagement;
 
 public class CharacterInfoActivity extends AppCompatActivity {
 
@@ -20,11 +25,13 @@ public class CharacterInfoActivity extends AppCompatActivity {
     TextView imgname;
     ImageView img;
     private int[] imgdrawList = {R.drawable.img_book_character_0, R.drawable.img_book_character_1,
-                                 R.drawable.img_book_character_2, R.drawable.img_book_character_3,
-                                 R.drawable.img_book_character_4, R.drawable.img_book_character_5};
+                         R.drawable.img_book_character_2, R.drawable.img_book_character_3,
+                         R.drawable.img_book_character_4, R.drawable.img_book_character_5};
     private String[] imgnameList = { "꼬꼬", "슈슈", "타타", "토토", "댕댕", "끼끼"};
 
-    Integer imgnum;
+    Integer imgnum = 0;
+
+    ValManagement valm;
     //</editor-fold>
 
     @Override
@@ -34,7 +41,21 @@ public class CharacterInfoActivity extends AppCompatActivity {
 
         imgname = findViewById(R.id.characterinfo_name);
         img = findViewById(R.id.characterinfo_img);
-        imgnum = new Random().nextInt(imgdrawList.length);
+
+        valm = new ValManagement(this);
+
+        ArrayList<Integer> indexs = valm.getdbList();
+        if(indexs == null) imgnum = new Random().nextInt(imgdrawList.length);
+        else if (indexs.get(0) == imgdrawList.length) {
+            // 모든 캐릭터를 다 얻은 상태 >> 모든 캐릭터 중 랜덤으로
+            imgnum = new Random().nextInt(imgdrawList.length);
+            TextView notice = findViewById(R.id.character_txt_notice);
+            notice.setText("모든 스티커 획득!");
+        }
+        else imgnum = indexs.get(new Random().nextInt(indexs.size()));
+        // 얻지 못한 캐릭터 인덱스 중 랜덤으로 뽑아 지정
+
+        valm.setContents(imgnum); // dbTXT 수정
         imgname.setText(imgnameList[imgnum]);
         img.setImageResource(imgdrawList[imgnum]);
 

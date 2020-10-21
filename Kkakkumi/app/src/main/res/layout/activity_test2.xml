@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/tee_back" />
+            app:srcCompat="@drawable/img_book_character_0" />
     </LinearLayout>
 
     <RelativeLayout

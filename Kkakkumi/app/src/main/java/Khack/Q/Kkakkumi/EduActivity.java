@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,24 +58,18 @@ import Khack.Q.Kkakkumi.Service.RecordService;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
-public class Test4Activity extends AppCompatActivity {
+public class EduActivity extends AppCompatActivity {
 
     //<editor-fold desc="변수 선언">
     Preview preview;
     Camera camera;
     PreviewView viewFinder;
-    TextView txt_notice;
+    ImageView img_noface;
 
     ImageAnalysis imageAnalysis;
     ExecutorService cameraExecutor;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-
-    String videoFile;
-    private MediaProjection mediaProjection;
-    private static final int REQUEST_CODE_MediaProjection = 101;
-    Intent inte;
-    DisplayMetrics displayMetrics;
 
     Context cont;
     RelativeLayout Rela;
@@ -89,32 +82,37 @@ public class Test4Activity extends AppCompatActivity {
     Integer gifstopPosition = 0, facefirst = 0, stoptime = 0;
     //</editor-fold>
 
+    String videoFile;
+    private MediaProjection mediaProjection;
+    private static final int REQUEST_CODE_MediaProjection = 101;
+    Intent inte;
+    DisplayMetrics displayMetrics;
+
     //</editor-fold>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test4);
+        setContentView(R.layout.activity_edu);
 
         //화면 꺼짐 방지
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //<editor-fold desc="변수 값 넣기">
         cont = this;
-        Rela = findViewById(R.id.e_testre);
+        Rela = findViewById(R.id.edu_relayout);
         imageLE = new ImageView(cont);
         Rela.addView(imageLE);
 
         //<editor-fold desc="camerX">
-        viewFinder = findViewById(R.id.e_viewFinder);
-
+        viewFinder = findViewById(R.id.edu_viewFinder);
         cameraExecutor = Executors.newSingleThreadExecutor();
         //</editor-fold>
 
-        txt_notice = findViewById(R.id.e_notice);
+        img_noface = findViewById(R.id.edu_img_nofacenoti);
 
         //<editor-fold desc="gif">
-        gif = findViewById(R.id.edu_gif);
+        gif = findViewById(R.id.edu_img_gif);
         //</editor-fold>
         //</editor-fold>
 
@@ -156,11 +154,12 @@ public class Test4Activity extends AppCompatActivity {
                     menu = "양치";
                     //gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
                     stoptime = 4670;
+                    //배경ㅇ 이미지 삭제
                     break;
                 case 1: //손씻기
                     menu = "손씻기";
                     gifFromResource = new GifDrawable( getResources(), R.raw.handgif );
-                    stoptime = 17600;
+                    stoptime = 17400;
                     break;
                 case 2: //기침막기
                     menu = "기침막기";
@@ -169,8 +168,8 @@ public class Test4Activity extends AppCompatActivity {
                     break;
                 case 3: //마스크
                     menu = "마스크";
-                    gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
-                    stoptime = 4670;
+                    gifFromResource = new GifDrawable( getResources(), R.raw.maskgif );
+                    stoptime = 32500;//39000;
                     break;
                 default:
                     Log.d("V_Error", "menu No : "+String.valueOf(getIntent().getExtras().getInt("menu")));
@@ -185,7 +184,7 @@ public class Test4Activity extends AppCompatActivity {
         }
         //</editor-fold>
 
-        String name = this.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString()
+        String name = cont.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString()
                         + "/" + mFormat.format(date) + "_" + menu + ".mp4";
 
         return name;
@@ -212,7 +211,7 @@ public class Test4Activity extends AppCompatActivity {
         if (mediaProjection != null) {
             mediaProjection.stop();
         }
-
+        stopService(inte);
         super.onDestroy();
     }
 
@@ -223,16 +222,17 @@ public class Test4Activity extends AppCompatActivity {
         if (mediaProjection == null) return;
 
         stoprecord();
+        stopService(inte);
 
         try{
             File file = new File(videoFile);
-            if(file.exists()){
+            if(file.exists()){ //!startpopup
                 file.delete();
-                Toast.makeText(Test4Activity.this, "교육 미완료로 녹화중이던 비디오 삭제!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EduActivity.this, "교육 미완료로 녹화중이던 비디오 삭제!", Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){
             Log.d("Video",e.getMessage());
-            Toast.makeText(Test4Activity.this, "교육 미완료로 녹화중이던 비디오 삭제 실패!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EduActivity.this, "교육 미완료로 녹화중이던 비디오 삭제 실패!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -421,8 +421,7 @@ public class Test4Activity extends AppCompatActivity {
                                     Log.d("Test", "start");
                                     if(recordAnswer ){ //&& mediaProjection != null
                                         if(faces.size() <= 0){
-                                            txt_notice.setText("얼굴을 보여줘!");
-                                            txt_notice.setVisibility(View.VISIBLE);
+                                            img_noface.setVisibility(View.VISIBLE);
 
                                             imageLE.setVisibility(View.VISIBLE);
                                             imageLE.setImageResource(R.drawable.backgrond_btnstart);
@@ -439,7 +438,7 @@ public class Test4Activity extends AppCompatActivity {
 
                                             Log.d("Test","No Face");
                                         } else{
-                                            txt_notice.setText("잘하고 있어!");
+                                            img_noface.setVisibility(View.INVISIBLE);
                                             facefirst += 1;
                                             imageLE.setVisibility(View.INVISIBLE);
                                             gif.setVisibility(View.VISIBLE);
@@ -474,12 +473,16 @@ public class Test4Activity extends AppCompatActivity {
                 startpopup = true;
                 //gif 재생 끝남 보상 스티커 팝업
                 Intent intent = new Intent(getApplicationContext(), CharacterInfoActivity.class);
-                startActivityForResult(intent,1);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        startActivityForResult(intent,1);
+                    }
+                }, 1500); // 2초 대기
             }
         }else{
             if(!gifplay) {
                 gifplay = true;
-                if(facefirst == 1) {
+                if(facefirst == 1 || gifstopPosition < 0) {
                     gifFromResource.seekTo(0);
                     gifstopPosition = 0;
                 }

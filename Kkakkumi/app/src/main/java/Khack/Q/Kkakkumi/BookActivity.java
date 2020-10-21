@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import Khack.Q.Kkakkumi.JustClass.ValManagement;
 
 /**
  * 보상 스티커 확인 페이지
@@ -15,13 +19,11 @@ import java.util.List;
  */
 public class BookActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
+    private int[] imgblackList = {R.drawable.img_book_character_0_black, R.drawable.img_book_character_1_black,
+                                  R.drawable.img_book_character_2_black, R.drawable.img_book_character_3_black,
+                                  R.drawable.img_book_character_4_black, R.drawable.img_book_character_5_black};
 
-    //<editor-fold desc="gif 재생">
-    //gif 재생을 위해 ImageView 객체
-    //ImageView img_c1;
-    //</editor-fold>
-
-    List<ImageView> imgCList;
+    ArrayList<ImageView> imgList;
 
     //</editor-fold>
 
@@ -30,24 +32,28 @@ public class BookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-        //<editor-fold desc="gif 재생">
-        // gif 재생을 위해 ImageView 요소 찾아서 넣기
-        //img_c1 = (ImageView)findViewById(R.id.book_img_c1);
-        // gif 재생
-        //Glide.with(this).load(R.raw.sheep_flod).into(img_c1);
-        //</editor-fold>
+        imgList = new ArrayList<>();
+        imgList.add(findViewById(R.id.book_img_c0));
+        imgList.add(findViewById(R.id.book_img_c1));
+        imgList.add(findViewById(R.id.book_img_c2));
+        imgList.add(findViewById(R.id.book_img_c3));
+        imgList.add(findViewById(R.id.book_img_c4));
+        imgList.add(findViewById(R.id.book_img_c5));
 
-        imgCList = new ArrayList<>();
-        imgCList.add(findViewById(R.id.book_img_c0));
-        imgCList.add(findViewById(R.id.book_img_c1));
-        imgCList.add(findViewById(R.id.book_img_c2));
-        imgCList.add(findViewById(R.id.book_img_c3));
-        imgCList.add(findViewById(R.id.book_img_c4));
-        imgCList.add(findViewById(R.id.book_img_c5));
-        /*
-        *
-6-1. 도감에서 1인 데이터만 그림 변경 - 생동감있는 친구로 (바꾸면 imgCList에서 지우기)
-6-2. imgCList 돌려서 클릭 이벤트 생성 ( 교육을 진행해 얻으라고 팝업 띄우기 )
-        * */
+        ValManagement valm = new ValManagement(this);
+        ArrayList<Integer> indexs = valm.getdbList();
+        // 기본 이미지 - origin >> 얻지 못한 스티커만 black으로 변경
+        // null - db 이상 > 0으로 모두 초기화 > 모두 black으로
+        if(indexs == null){
+            for(int cnt = 0 ; cnt < imgList.size() ; cnt++){
+                imgList.get(cnt).setImageResource(imgblackList[cnt]);
+            }
+        }else if (indexs.get(0) == imgList.size()){
+            // 캐릭터를 다 얻은 상태 >> 바꿀 것이 없음
+        } else { // 리스트에는 얻지 못한 캐릭터 인덱스만 있으므로 해당 이미지만 black으로 변경
+            for(Integer cnt : indexs){
+                imgList.get(cnt).setImageResource(imgblackList[cnt]);
+            }
+        }
     }
 }

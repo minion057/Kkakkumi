@@ -11,6 +11,7 @@
     android:background="@drawable/backgrond_roundsquare_pop">
 
     <TextView
+        android:id="@+id/character_txt_notice"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_weight="1"
@@ -21,7 +22,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/backgrond_roundsquare_main"
         android:textColor="@color/colorMenu"
-        android:text="보상 스티커 획득!" />
+        android:text="보상 스티커 획득!" /> <!--모든 스티커 획득!-->
 
     <ImageView
         android:id="@+id/characterinfo_img"

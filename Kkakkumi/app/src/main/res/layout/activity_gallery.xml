@@ -12,34 +12,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <Button
             android:id="@+id/gallery_btnfirst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="처음으로" />
+            android:text="처음으로"
+            android:padding="10dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:textColor="@color/colorTitle2" />
 
         <Button
             android:id="@+id/gallery_btndelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:text="Delete" />
+            android:text="Delete"
+            android:padding="10dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:textColor="@color/colorTitle2"/>
 
         <Button
             android:id="@+id/gallery_btnlast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="마지막으로" />
+            android:text="마지막으로"
+            android:padding="10dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/backgrond_btnstart"
+            android:fontFamily="@font/jalnan"
+            android:textColor="@color/colorTitle2"/>
     </LinearLayout>
 
     <TextView
@@ -50,7 +63,11 @@
         android:gravity="center"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:text="Video Name" />
+        tools:text="Video Name"
+        android:fontFamily="@font/tmoney"
+        android:textColor="@color/colorMenu"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"/>
 
     <LinearLayout
         android:id="@+id/gallery_gestureArea"
@@ -69,7 +86,7 @@
             android:layout_marginBottom="30dp"
             android:layout_weight="4"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/sheep_flod1" />
+            app:srcCompat="@drawable/img_book_character_0" />
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/gallery_tv"
@@ -89,7 +106,7 @@
             android:layout_marginBottom="30dp"
             android:layout_weight="4"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/sheep_straight_mask" />
+            app:srcCompat="@drawable/img_book_character_0" />
 
     </LinearLayout>
 
