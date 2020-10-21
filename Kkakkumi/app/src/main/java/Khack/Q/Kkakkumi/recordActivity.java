@@ -1,10 +1,7 @@
 package Khack.Q.Kkakkumi;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import android.app.NotificationChannel;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -18,17 +15,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 
 import Khack.Q.Kkakkumi.Service.RecordService;
-
-import static androidx.camera.core.CameraX.getContext;
 
 public class recordActivity extends AppCompatActivity {
 
