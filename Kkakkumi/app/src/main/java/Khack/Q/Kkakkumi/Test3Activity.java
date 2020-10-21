@@ -18,9 +18,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +46,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,6 +56,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import Khack.Q.Kkakkumi.Service.RecordService;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 public class Test3Activity extends AppCompatActivity {
 
@@ -76,6 +81,14 @@ public class Test3Activity extends AppCompatActivity {
     Context cont;
     RelativeLayout Rela;
     ImageView imageLE; //추가할 이미지 변수 여기에 넣기
+
+    //<editor-fold desc="gif 재생">
+    GifImageView gif;
+    GifDrawable gifFromResource;
+    Boolean recordAnswer = false, gifplay = false, startpopup = false;
+    Integer gifstopPosition = 0, facefirst = 0, stoptime = 0;
+    //</editor-fold>
+
     //</editor-fold>
 
     @Override
@@ -83,14 +96,14 @@ public class Test3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test3);
 
+        //화면 꺼짐 방지
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.e_testre);
         imageLE = new ImageView(cont);
         Rela.addView(imageLE);
-
-        //비디오 가져오고 머 프리페어든 모든 다 하고
-        //그 전에 invisible(안보이게 아래 setvi그거 보고 하센)
 
         //<editor-fold desc="camerX">
         viewFinder = findViewById(R.id.e_viewFinder);
@@ -99,13 +112,14 @@ public class Test3Activity extends AppCompatActivity {
         //</editor-fold>
 
         txt_notice = findViewById(R.id.e_notice);
+
+        //<editor-fold desc="gif">
+        gif = findViewById(R.id.edu_gif);
+        //</editor-fold>
         //</editor-fold>
 
         //<editor-fold desc="recordvideo">
-
-        //videoFile = setvideoname();
-
-        videoFile = setvideoname();
+        videoFile = setvideonameandgif(getIntent().getExtras().getInt("menu"));
 
         inte = new Intent(this, RecordService.class);
         if (Build.VERSION.SDK_INT >= 26) {
@@ -123,40 +137,57 @@ public class Test3Activity extends AppCompatActivity {
         //</editor-fold>
 
         startrecord();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                stoprecord();
-            }
-        }, 7000);
         //</editor-fold>
     }
 
     //<editor-fold desc="recordvideo">
-    public String setvideoname(){
+    public String setvideonameandgif(int menunum){
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
         String menu="";
-        switch (getIntent().getExtras().getInt("menu")){
-            case 0: //양치
-                menu = "양치";
-                break;
-            case 1: //손씻기
-                menu = "손씻기";
-                break;
-            case 2: //기침막기
-                menu = "기침막기";
-                break;
-            case 3: //마스크
-                menu = "마스크";
-                break;
-            default:
-                Log.d("V_Error", "menu No : "+String.valueOf(getIntent().getExtras().getInt("menu")));
-                break;
+
+        //<editor-fold desc="gif">
+        try {
+            gifFromResource = new GifDrawable( getResources(), R.raw.testgif );
+
+            switch (menunum){
+                case 0: //양치
+                    menu = "양치";
+                    //gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
+                    stoptime = 4670;
+                    break;
+                case 1: //손씻기
+                    menu = "손씻기";
+                    gifFromResource = new GifDrawable( getResources(), R.raw.handgif );
+                    stoptime = 17600;
+                    break;
+                case 2: //기침막기
+                    menu = "기침막기";
+                    gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
+                    stoptime = 6990;
+                    break;
+                case 3: //마스크
+                    menu = "마스크";
+                    gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
+                    stoptime = 4670;
+                    break;
+                default:
+                    Log.d("V_Error", "menu No : "+String.valueOf(getIntent().getExtras().getInt("menu")));
+                    break;
+            }
+
+            gif.setImageDrawable(gifFromResource);
+            gifFromResource.stop();
+            gifFromResource.seekTo(0);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        //</editor-fold>
+
         String name = this.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString()
-                        + "/" + mFormat.format(date) + "_" + menu + ".mp4";
+                + "/" + mFormat.format(date) + "_" + menu + ".mp4";
+
         return name;
     }
 
@@ -170,8 +201,8 @@ public class Test3Activity extends AppCompatActivity {
             mediaProjection.stop();
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");//webm");
-            startActivity(intent);
+            intent.setDataAndType(Uri.parse(videoFile), "video/mp4");
+            //startActivity(intent);
         }
     }
 
@@ -181,12 +212,38 @@ public class Test3Activity extends AppCompatActivity {
         if (mediaProjection != null) {
             mediaProjection.stop();
         }
+
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mediaProjection == null) return;
+
+        stoprecord();
+
+        try{
+            File file = new File(videoFile);
+            if(file.exists()){
+                file.delete();
+                Toast.makeText(Test3Activity.this, "교육 미완료로 녹화중이던 비디오 삭제!", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Log.d("Video",e.getMessage());
+            Toast.makeText(Test3Activity.this, "교육 미완료로 녹화중이던 비디오 삭제 실패!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, @Nullable final Intent data) {
         // 미디어 프로젝션 응답
+        recordAnswer = true;
+        if(startpopup){
+            stoprecord();
+            finish();
+        }
         if (requestCode == REQUEST_CODE_MediaProjection && resultCode == RESULT_OK) {
             screenRecorder(resultCode, data);
             return;
@@ -228,8 +285,6 @@ public class Test3Activity extends AppCompatActivity {
             }
         };
         mediaProjection.registerCallback(callback, null);
-
-        //DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
         mediaProjection.createVirtualDisplay(
                 "sample",
                 displayMetrics.widthPixels, displayMetrics.heightPixels, displayMetrics.densityDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
@@ -248,12 +303,12 @@ public class Test3Activity extends AppCompatActivity {
         MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);//.WEBM);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setOutputFile(videoFile);
         mediaRecorder.setVideoSize(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);//VP8);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);//.OPUS);
-        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+        CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);//.QUALITY_HIGH);
         mediaRecorder.setVideoEncodingBitRate(cpHigh.videoBitRate);
         mediaRecorder.setVideoFrameRate(cpHigh.videoFrameRate);
 
@@ -281,7 +336,6 @@ public class Test3Activity extends AppCompatActivity {
                 cameraProvider.unbindAll();
 
                 //<editor-fold desc="firebase ML_이미지 분석 > 1초마다 실행되는 부분">
-                // .setTargetResolution(new Size(1280, 720))
                 // 있어야 원활하게 실행됨 (got it 뜨는게 한번만 뜸)
                 imageAnalysis =
                         new ImageAnalysis.Builder()
@@ -365,50 +419,74 @@ public class Test3Activity extends AppCompatActivity {
                         .addOnSuccessListener(
                                 faces -> {
                                     Log.d("Test", "start");
-                                    if(faces.size() <= 0){
-                                        //drawface(null);
-                                        txt_notice.setText("얼굴을 보여줘!");
-                                        txt_notice.setVisibility(View.VISIBLE);
+                                    if(recordAnswer ){ //&& mediaProjection != null
+                                        if(faces.size() <= 0){
+                                            txt_notice.setText("얼굴을 보여줘!");
+                                            txt_notice.setVisibility(View.VISIBLE);
 
+                                            imageLE.setVisibility(View.VISIBLE);
+                                            imageLE.setImageResource(R.drawable.backgrond_btnstart);
+                                            imageLE.setX(p.x / 2 -400);
+                                            imageLE.setY(p.y /2 - 600);
+                                            imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
 
-                                        //여기서는 동영상이 멈춰야함.
-                                        //비디오가 숨겨져있는 상태//invisible (txt_notice처럼 위에서 엑티비티를 가져와)
+                                            if(gifplay) {
+                                                gifplay = false;
+                                                gifstopPosition = gifFromResource.getCurrentPosition();
+                                                //gifFromResource.stop();
+                                            }
+                                            gif.setVisibility(View.INVISIBLE);
 
-
-
-
-                                        imageLE.setImageResource(R.drawable.backgrond_btnstart);
-                                        imageLE.setX(p.x / 2 -400);
-                                        imageLE.setY(p.y /2 - 600);
-                                        imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
-
-                                        Log.d("Test","No Face");
-                                    }
-                                    for (FirebaseVisionFace face : faces) {
-                                        //drawface(face);
-                                        txt_notice.setText("잘하고 있어!");
-
-                                        Log.d("Test","Face bounds : " + face.getBoundingBox());
-
-                                        //동영상이 재생되어야함
-                                        //단, 얼굴이 보여야 처음부터 재생
-                                        //얼굴 안보이면 멈췄다가
-                                        //다시 얼굴 보이면 재생~
-                                        //마지막은 비디오 숨기고 이미지 띄우기
-
+                                            Log.d("Test","No Face");
+                                        } else{
+                                            txt_notice.setText("잘하고 있어!");
+                                            facefirst += 1;
+                                            imageLE.setVisibility(View.INVISIBLE);
+                                            gif.setVisibility(View.VISIBLE);
+                                            checkgifend();
+                                        }
+                                        for (FirebaseVisionFace face : faces) {
+                                            Log.d("Test","Face bounds : " + face.getBoundingBox());
+                                        }
                                     }
                                 })
                         .addOnFailureListener(
                                 e -> Log.d("Test", "fail"));
-
             }catch (Exception ex){
                 Log.e("Error", "Why : "+ex.getMessage());
             }
-
             // 4.
             imageP.close();
         }
     }
 
+    public void checkgifend(){
+        gifstopPosition = gifFromResource.getCurrentPosition();
+        if (gifstopPosition >= stoptime
+                || gifFromResource.getCurrentPosition() >= stoptime){
 
+            if(gifplay) {
+                gifplay = false;
+                gifstopPosition = gifFromResource.getCurrentPosition();
+                gifFromResource.stop();
+            }
+            if(!startpopup){
+                startpopup = true;
+                //gif 재생 끝남 보상 스티커 팝업
+                Intent intent = new Intent(getApplicationContext(), CharacterInfoActivity.class);
+                startActivityForResult(intent,1);
+            }
+        }else{
+            if(!gifplay) {
+                gifplay = true;
+                if(facefirst == 1) {
+                    gifFromResource.seekTo(0);
+                    gifstopPosition = 0;
+                }
+                else gifFromResource.seekTo(gifstopPosition);
+                gifFromResource.start();
+            }
+        }
+
+    }
 }

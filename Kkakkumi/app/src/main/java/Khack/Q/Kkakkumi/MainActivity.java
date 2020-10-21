@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), Test4Activity.class);
                         break;
                     case 2: //기침막기
-                        intent = new Intent(getApplicationContext(), VideoActivity.class);
+                        intent = new Intent(getApplicationContext(), Test4Activity.class);
                         break;
                     case 3: //마스크
                         intent = new Intent(getApplicationContext(), recordActivity.class);
