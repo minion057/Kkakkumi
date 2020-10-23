@@ -10,7 +10,7 @@
         android:id="@+id/edu_img_gif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="6dp"
+        android:elevation="4dp"
         android:visibility="invisible"/>
 
     <ImageView
@@ -28,7 +28,16 @@
         android:id="@+id/edu_relayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="2dp"></RelativeLayout>
+        android:elevation="7dp">
+
+        <ImageView
+            android:id="@+id/edu_img_vir"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/img_vir"
+            tools:ignore="MissingConstraints"
+            android:visibility="invisible"/>
+    </RelativeLayout>
 
     <androidx.camera.view.PreviewView
         android:id="@+id/edu_viewFinder"

@@ -48,7 +48,7 @@ public class BookActivity extends AppCompatActivity {
             for(int cnt = 0 ; cnt < imgList.size() ; cnt++){
                 imgList.get(cnt).setImageResource(imgblackList[cnt]);
             }
-        }else if (indexs.get(0) == imgList.size()){
+        }else if (indexs.size() == 0){//(indexs.get(0) == imgList.size()){
             // 캐릭터를 다 얻은 상태 >> 바꿀 것이 없음
         } else { // 리스트에는 얻지 못한 캐릭터 인덱스만 있으므로 해당 이미지만 black으로 변경
             for(Integer cnt : indexs){

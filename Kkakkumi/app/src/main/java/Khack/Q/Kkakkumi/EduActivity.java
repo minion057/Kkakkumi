@@ -41,7 +41,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
+import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceContour;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
@@ -71,10 +73,6 @@ public class EduActivity extends AppCompatActivity {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
-    Context cont;
-    RelativeLayout Rela;
-    ImageView imageLE; //추가할 이미지 변수 여기에 넣기
-
     //<editor-fold desc="gif 재생">
     GifImageView gif;
     GifDrawable gifFromResource;
@@ -87,6 +85,10 @@ public class EduActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_MediaProjection = 101;
     Intent inte;
     DisplayMetrics displayMetrics;
+
+    Context cont;
+    RelativeLayout Rela;
+    ImageView imagevir;
 
     //</editor-fold>
 
@@ -101,8 +103,8 @@ public class EduActivity extends AppCompatActivity {
         //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.edu_relayout);
-        imageLE = new ImageView(cont);
-        Rela.addView(imageLE);
+        imagevir = findViewById(R.id.edu_img_vir);//new ImageView(cont);
+        //Rela.addView(imageLE);
 
         //<editor-fold desc="camerX">
         viewFinder = findViewById(R.id.edu_viewFinder);
@@ -419,15 +421,14 @@ public class EduActivity extends AppCompatActivity {
                         .addOnSuccessListener(
                                 faces -> {
                                     Log.d("Test", "start");
-                                    if(recordAnswer ){ //&& mediaProjection != null
+                                    if(recordAnswer ){
                                         if(faces.size() <= 0){
                                             img_noface.setVisibility(View.VISIBLE);
 
-                                            imageLE.setVisibility(View.VISIBLE);
-                                            imageLE.setImageResource(R.drawable.backgrond_btnstart);
-                                            imageLE.setX(p.x / 2 -400);
-                                            imageLE.setY(p.y /2 - 600);
-                                            imageLE.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));
+                                            imagevir.setVisibility(View.INVISIBLE);
+                                            /*imagevir.setX(p.x / 2 -400);
+                                            imagevir.setY(p.y /2 - 600);
+                                            imagevir.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));*/
 
                                             if(gifplay) {
                                                 gifplay = false;
@@ -440,12 +441,27 @@ public class EduActivity extends AppCompatActivity {
                                         } else{
                                             img_noface.setVisibility(View.INVISIBLE);
                                             facefirst += 1;
-                                            imageLE.setVisibility(View.INVISIBLE);
+                                            imagevir.setVisibility(View.VISIBLE);
                                             gif.setVisibility(View.VISIBLE);
                                             checkgifend();
                                         }
                                         for (FirebaseVisionFace face : faces) {
                                             Log.d("Test","Face bounds : " + face.getBoundingBox());
+
+                                            List<FirebaseVisionPoint> LipContour =
+                                                    face.getContour(FirebaseVisionFaceContour.UPPER_LIP_TOP).getPoints();
+                                            if(LipContour.size() <= 0 ) return;
+
+                                            for(FirebaseVisionPoint fp : LipContour){
+                                                imagevir.setX(p.x * fp.getX() / imageP.getWidth()+40);
+                                                imagevir.setY(p.y * fp.getY() / imageP.getHeight()-500);
+                                                //100 > right
+                                                if(imagevir.getX() < imageP.getWidth()/2)
+                                                    imagevir.setX(p.x-imageP.getWidth()/2);
+                                                else if(imagevir.getX() > imageP.getWidth()-100)
+                                                    imagevir.setX(80);
+                                                break;
+                                            }
                                         }
                                     }
                                 })

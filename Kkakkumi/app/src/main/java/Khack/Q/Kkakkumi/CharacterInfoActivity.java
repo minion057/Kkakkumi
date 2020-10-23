@@ -46,7 +46,7 @@ public class CharacterInfoActivity extends AppCompatActivity {
 
         ArrayList<Integer> indexs = valm.getdbList();
         if(indexs == null) imgnum = new Random().nextInt(imgdrawList.length);
-        else if (indexs.get(0) == imgdrawList.length) {
+        else if (indexs.size() == 0){//(indexs.get(0) == imgdrawList.length) {
             // 모든 캐릭터를 다 얻은 상태 >> 모든 캐릭터 중 랜덤으로
             imgnum = new Random().nextInt(imgdrawList.length);
             TextView notice = findViewById(R.id.character_txt_notice);

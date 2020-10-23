@@ -221,6 +221,18 @@
                     android:textColor="@color/colorMenu"
                     android:text="끼끼" />
             </TableRow>
+
+
+            <ImageView
+                android:id="@+id/book_img_last"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="50dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/img_book_last" />
         </TableLayout>
     </ScrollView>
 </LinearLayout>
