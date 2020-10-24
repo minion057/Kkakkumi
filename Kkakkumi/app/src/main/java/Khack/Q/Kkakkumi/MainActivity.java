@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     //<editor-fold desc="페이지 넘기기">
     //뒤로가기(back key) 제어(종료)관리 클래스 객체
-    Button btnEduStart, btnBookStart, btnGalleryStart, btncopyright;
+    Button btnEduStart, btnBookStart, btncopyright;
+    ImageView btnGalleryStart;
     // 페이지 넘기기 객체
     Intent intent;
     //</editor-fold>

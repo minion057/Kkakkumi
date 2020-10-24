@@ -16,4 +16,13 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="copyright_info">
+        Font : 여기어때 잘난체\nColor(나는야) : #595959\nColor(깔끄미) : #82CBC4\nColor(메뉴) : #5D6DBE\n
+        교육 BGM : Sand Castle - Quincas Moreira
+    </string>
+    <string name="copyright_info_contents">
+        이 애플리케이션은 ㈜여기어때컴퍼니가 제공한 여기어때 잘난체,
+        ㈜티머니가 제공한  티머니 둥근바람 폰트와 미리캔버스에서 제공하는 캐릭터가 적용되어 있습니다.
+    </string>
 </resources>

@@ -1,36 +1,25 @@
 package Khack.Q.Kkakkumi;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class SplashActivity extends AppCompatActivity {
     //<editor-fold desc="변수 선언">
     //splash 화면에 있는 요소 - 애니메이션을 연결할 TextView
-    TextView txt_title1, txt_title2;
+    //TextView txt_title1, txt_title2;
     //AnimationListener 안에서 다음 페이지로 넘어가기 위해 필요한 Intent 생성을 못해서 따로 변수 생성
     Intent inte;
     //애니메이션 xml 변수
-    Animation ani_txt1, ani_txt2;
+    Animation ani_txt1, ani_txt2, ani_imgup, ani_imgdown;
+
+    ImageView txt_title1, txt_title2, img1, img2, img3;
     //</editor-fold>
 
     @Override
@@ -41,8 +30,15 @@ public class SplashActivity extends AppCompatActivity {
         //<editor-fold desc="변수 값 입력">
 
         //splash 화면에 있는 요소를 찾아 입력
-        txt_title1 = (TextView) findViewById(R.id.loading_txt_Title1);
-        txt_title2 = (TextView) findViewById(R.id.loading_txt_Title2);
+        txt_title1 = findViewById(R.id.splash_title1);
+        txt_title2 = findViewById(R.id.splash_title2);
+        img1 = findViewById(R.id.splash_img1);
+        img2 = findViewById(R.id.splash_img2);
+        img3 = findViewById(R.id.splash_img3);
+
+        img1.setVisibility(View.INVISIBLE);
+        img2.setVisibility(View.INVISIBLE);
+        img3.setVisibility(View.INVISIBLE);
 
         //AnimationListener 안에서 MainActivity로 넘어가기 위해 필요한 intent 값
         inte = new Intent(this, MainActivity.class);
@@ -50,6 +46,8 @@ public class SplashActivity extends AppCompatActivity {
         //애니메이션 xml 연결
         ani_txt1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_splash_title1);
         ani_txt2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_splash_title2);
+        ani_imgup = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_splash_imgup);
+        ani_imgdown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_splash_imgdown);
         //</editor-fold>
 
         //<editor-fold desc="애니메이션 시작하고 메인페이지로 넘어가기">
@@ -66,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(inte);
                         finish();
                     }
-                }, 100);
+                }, 1500);
             }
 
             /*애니메이션 시작*/
@@ -77,6 +75,24 @@ public class SplashActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         });
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                img1.setAnimation(ani_imgup);
+                img1.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        img3.setAnimation(ani_imgdown);
+                        img3.setVisibility(View.VISIBLE);
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                img2.setAnimation(ani_imgup);
+                                img2.setVisibility(View.VISIBLE);
+                            }
+                        }, 400);
+                    }
+                }, 400);
+            }
+        }, 400);
         //</editor-fold>
     }
 }

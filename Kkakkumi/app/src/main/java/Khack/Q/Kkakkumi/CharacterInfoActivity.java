@@ -1,6 +1,8 @@
 package Khack.Q.Kkakkumi;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +34,8 @@ public class CharacterInfoActivity extends AppCompatActivity {
     Integer imgnum = 0;
 
     ValManagement valm;
+
+    MediaPlayer mediaPlayer;
     //</editor-fold>
 
     @Override
@@ -59,6 +63,13 @@ public class CharacterInfoActivity extends AppCompatActivity {
         imgname.setText(imgnameList[imgnum]);
         img.setImageResource(imgdrawList[imgnum]);
 
+        mediaPlayer = MediaPlayer.create(CharacterInfoActivity.this, R.raw.audio_last);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                mediaPlayer.start();
+            }
+        }, 500); //-2초
+
         //<editor-fold desc="팝업 페이지 닫기">
         btnClose = (Button) findViewById(R.id.character_pop_btn_Close);
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -75,5 +86,15 @@ public class CharacterInfoActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_OUTSIDE) return false;
         return true;
+    }
+    //</editor-fold>
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

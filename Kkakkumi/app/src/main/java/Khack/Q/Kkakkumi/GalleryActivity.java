@@ -81,6 +81,7 @@ public class GalleryActivity extends AppCompatActivity {
 
         valM = new ValManagement(this);
         filepathList = Arrays.asList(valM.getVideoList());
+        filepathList.sort(null);
         Collections.reverse(filepathList);
         nameList = new ArrayList<>();
         for (File i : this.filepathList) {

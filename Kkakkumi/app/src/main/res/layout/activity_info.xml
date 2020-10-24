@@ -68,7 +68,7 @@
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/jalnan"
                 android:gravity="center"
-                android:text="Font : 여기어때 잘난체\nColor(나는야) : #595959\nColor(깔끄미) : #82CBC4\nColor(메뉴) : #5D6DBE"
+                android:text="@string/copyright_info"
                 android:textColor="@color/colorTitle1" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:gravity="fill"
                 android:layout_gravity="fill"
                 android:layout_marginTop="10dp"
-                android:text="이 애플리케이션은 ㈜여기어때컴퍼니가 제공한 여기어때 잘난체, ㈜티머니가 제공한  티머니 둥근바람 폰트와 미리캔버스에서 제공하는 캐릭터가 적용되어 있습니다."
+                android:text="@string/copyright_info_contents"
                 android:textColor="@color/colorinfo" />
         </LinearLayout>
     </ScrollView>

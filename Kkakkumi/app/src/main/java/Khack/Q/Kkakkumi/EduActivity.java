@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.media.CamcorderProfile;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -20,6 +21,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -52,6 +54,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,6 +62,7 @@ import java.util.concurrent.Executors;
 import Khack.Q.Kkakkumi.Service.RecordService;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
+
 
 public class EduActivity extends AppCompatActivity {
 
@@ -76,8 +80,14 @@ public class EduActivity extends AppCompatActivity {
     //<editor-fold desc="gif 재생">
     GifImageView gif;
     GifDrawable gifFromResource;
-    Boolean recordAnswer = false, gifplay = false, startpopup = false;
-    Integer gifstopPosition = 0, facefirst = 0, stoptime = 0;
+    Boolean recordAnswer = false, gifplay = false, startpopup = false, giffirstart = true;
+
+    Integer[] gif_achList = {R.raw.gif_ach0, R.raw.gif_ach1, R.raw.gif_ach2};
+    //Integer[] gif_List = {R.raw.gif_ach0, R.raw.gif_ach1, R.raw.gif_ach2};
+    //Integer[] gif_List = {R.raw.gif_ach0, R.raw.gif_ach1, R.raw.gif_ach2};
+
+    MediaPlayer mediaPlayer;
+    Integer stoptime = 0;
     //</editor-fold>
 
     String videoFile;
@@ -89,6 +99,8 @@ public class EduActivity extends AppCompatActivity {
     Context cont;
     RelativeLayout Rela;
     ImageView imagevir;
+
+    Integer menunum;
 
     //</editor-fold>
 
@@ -103,7 +115,7 @@ public class EduActivity extends AppCompatActivity {
         //<editor-fold desc="변수 값 넣기">
         cont = this;
         Rela = findViewById(R.id.edu_relayout);
-        imagevir = findViewById(R.id.edu_img_vir);//new ImageView(cont);
+        imagevir = findViewById(R.id.edu_img_vir);
         //Rela.addView(imageLE);
 
         //<editor-fold desc="camerX">
@@ -119,7 +131,8 @@ public class EduActivity extends AppCompatActivity {
         //</editor-fold>
 
         //<editor-fold desc="recordvideo">
-        videoFile = setvideonameandgif(getIntent().getExtras().getInt("menu"));
+        menunum = getIntent().getExtras().getInt("menu");
+        videoFile = setvideonameandgif();
 
         inte = new Intent(this, RecordService.class);
         if (Build.VERSION.SDK_INT >= 26) {
@@ -141,7 +154,7 @@ public class EduActivity extends AppCompatActivity {
     }
 
     //<editor-fold desc="recordvideo">
-    public String setvideonameandgif(int menunum){
+    public String setvideonameandgif(){
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
@@ -149,29 +162,26 @@ public class EduActivity extends AppCompatActivity {
 
         //<editor-fold desc="gif">
         try {
-            gifFromResource = new GifDrawable( getResources(), R.raw.testgif );
-
             switch (menunum){
                 case 0: //양치
                     menu = "양치";
-                    //gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
-                    stoptime = 4670;
-                    //배경ㅇ 이미지 삭제
+                    gifFromResource = new GifDrawable( getResources(), R.raw.gif_tee);
+                    mediaPlayer = MediaPlayer.create(EduActivity.this, R.raw.audio_tee);
                     break;
                 case 1: //손씻기
                     menu = "손씻기";
-                    gifFromResource = new GifDrawable( getResources(), R.raw.handgif );
-                    stoptime = 17400;
+                    gifFromResource = new GifDrawable( getResources(), R.raw.gif_hand);
+                    mediaPlayer = MediaPlayer.create(EduActivity.this, R.raw.audio_hand);
                     break;
                 case 2: //기침막기
                     menu = "기침막기";
-                    gifFromResource = new GifDrawable( getResources(), R.raw.achgif );
-                    stoptime = 6990;
+                    gifFromResource = new GifDrawable( getResources(), gif_achList[new Random().nextInt(gif_achList.length)]);
+                    mediaPlayer = MediaPlayer.create(EduActivity.this, R.raw.audio_ach);
                     break;
                 case 3: //마스크
                     menu = "마스크";
-                    gifFromResource = new GifDrawable( getResources(), R.raw.maskgif );
-                    stoptime = 32500;//39000;
+                    gifFromResource = new GifDrawable( getResources(), R.raw.gif_mask);
+                    mediaPlayer = MediaPlayer.create(EduActivity.this, R.raw.audio_mask);
                     break;
                 default:
                     Log.d("V_Error", "menu No : "+String.valueOf(getIntent().getExtras().getInt("menu")));
@@ -181,6 +191,18 @@ public class EduActivity extends AppCompatActivity {
             gif.setImageDrawable(gifFromResource);
             gifFromResource.stop();
             gifFromResource.seekTo(0);
+
+            //<editor-fold desc="gif controll bar">
+            //final MediaController mc = new MediaController(this);
+            //mc.setMediaPlayer((GifDrawable) gifFromResource);
+            //mc.setAnchorView(gif);
+            //gif.setOnClickListener(new View.OnClickListener() {
+            //    @Override
+            //    public void onClick(View v) {
+            //        mc.show();
+            //    }
+            //});
+            //</editor-fold>
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -212,6 +234,10 @@ public class EduActivity extends AppCompatActivity {
         // 녹화중이면 종료하기
         if (mediaProjection != null) {
             mediaProjection.stop();
+        }
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
         stopService(inte);
         super.onDestroy();
@@ -422,47 +448,46 @@ public class EduActivity extends AppCompatActivity {
                                 faces -> {
                                     Log.d("Test", "start");
                                     if(recordAnswer ){
-                                        if(faces.size() <= 0){
+                                        if(faces.size() < 1){
                                             img_noface.setVisibility(View.VISIBLE);
 
                                             imagevir.setVisibility(View.INVISIBLE);
-                                            /*imagevir.setX(p.x / 2 -400);
-                                            imagevir.setY(p.y /2 - 600);
-                                            imagevir.setLayoutParams(new RelativeLayout.LayoutParams(800, 800));*/
-
                                             if(gifplay) {
                                                 gifplay = false;
-                                                gifstopPosition = gifFromResource.getCurrentPosition();
-                                                //gifFromResource.stop();
+                                                stoptime = gifFromResource.getCurrentPosition()-500;
+                                                gifFromResource.stop();
+                                                mediaPlayer.pause();
                                             }
                                             gif.setVisibility(View.INVISIBLE);
 
                                             Log.d("Test","No Face");
                                         } else{
                                             img_noface.setVisibility(View.INVISIBLE);
-                                            facefirst += 1;
-                                            imagevir.setVisibility(View.VISIBLE);
                                             gif.setVisibility(View.VISIBLE);
                                             checkgifend();
-                                        }
-                                        for (FirebaseVisionFace face : faces) {
-                                            Log.d("Test","Face bounds : " + face.getBoundingBox());
+                                            if(menunum != 1){
+                                                imagevir.setVisibility(View.VISIBLE);
+                                                for (FirebaseVisionFace face : faces) {
+                                                    Log.d("Test","Face bounds : " + face.getBoundingBox());
 
-                                            List<FirebaseVisionPoint> LipContour =
-                                                    face.getContour(FirebaseVisionFaceContour.UPPER_LIP_TOP).getPoints();
-                                            if(LipContour.size() <= 0 ) return;
+                                                    List<FirebaseVisionPoint> LipContour =
+                                                            face.getContour(FirebaseVisionFaceContour.UPPER_LIP_TOP).getPoints();
+                                                    if(LipContour.size() <= 0 ) return;
 
-                                            for(FirebaseVisionPoint fp : LipContour){
-                                                imagevir.setX(p.x * fp.getX() / imageP.getWidth()+40);
-                                                imagevir.setY(p.y * fp.getY() / imageP.getHeight()-500);
-                                                //100 > right
-                                                if(imagevir.getX() < imageP.getWidth()/2)
-                                                    imagevir.setX(p.x-imageP.getWidth()/2);
-                                                else if(imagevir.getX() > imageP.getWidth()-100)
-                                                    imagevir.setX(80);
-                                                break;
+                                                    for(FirebaseVisionPoint fp : LipContour){
+                                                        imagevir.setX(p.x * fp.getX() / imageP.getWidth()+40);
+                                                        imagevir.setY(p.y * fp.getY() / imageP.getHeight()-500);
+                                                        //100 > right
+                                                        if(imagevir.getX() < imageP.getWidth()/2)
+                                                            imagevir.setX(p.x-imageP.getWidth()/2);
+                                                        else if(imagevir.getX() > imageP.getWidth()-100)
+                                                            imagevir.setX(80);
+                                                        break;
+                                                    }
+                                                }
                                             }
                                         }
+
                                     }
                                 })
                         .addOnFailureListener(
@@ -476,13 +501,9 @@ public class EduActivity extends AppCompatActivity {
     }
 
     public void checkgifend(){
-        gifstopPosition = gifFromResource.getCurrentPosition();
-        if (gifstopPosition >= stoptime
-                || gifFromResource.getCurrentPosition() >= stoptime){
-
+        if (gifFromResource.getCurrentPosition() < 0){
             if(gifplay) {
                 gifplay = false;
-                gifstopPosition = gifFromResource.getCurrentPosition();
                 gifFromResource.stop();
             }
             if(!startpopup){
@@ -491,21 +512,23 @@ public class EduActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CharacterInfoActivity.class);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
+                        if(mediaPlayer.isPlaying()) mediaPlayer.pause();
                         startActivityForResult(intent,1);
                     }
-                }, 1500); // 2초 대기
+                }, 1500); //-2초
             }
         }else{
             if(!gifplay) {
                 gifplay = true;
-                if(facefirst == 1 || gifstopPosition < 0) {
-                    gifFromResource.seekTo(0);
-                    gifstopPosition = 0;
+                if(giffirstart) {
+                    giffirstart = false;
+                    stoptime = 0;
                 }
-                else gifFromResource.seekTo(gifstopPosition);
+                gifFromResource.seekTo(stoptime);
+                mediaPlayer.seekTo(stoptime);
                 gifFromResource.start();
+                mediaPlayer.start();
             }
         }
-
     }
 }
